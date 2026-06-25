@@ -1,0 +1,23 @@
+{
+  "version": 2,
+  "cleanUrls": true,
+  "functions": {
+    "api/scrape.js": {
+      "maxDuration": 60
+    },
+    "api/search.js": {
+      "maxDuration": 60
+    }
+  },
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/$1" },
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/job_search_ui", "destination": "/job_search_ui.html" }
+  ],
+  "crons": [
+    {
+      "path": "/api/scrape",
+      "schedule": "0 2 * * *"
+    }
+  ]
+}

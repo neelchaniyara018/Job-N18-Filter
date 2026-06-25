@@ -1,0 +1,24 @@
+[2026-06-12 18:00:03] ==============================
+[2026-06-12 18:00:03] Daily Job Agent Started
+[2026-06-12 18:00:03] Date: 12-06-2026
+[2026-06-12 18:00:03] ==============================
+[2026-06-12 18:00:03] Opening upload dashboard...
+[2026-06-12 18:00:03] Dashboard opened in browser: C:\Program Files\Google\Chrome\Application\chrome.exe
+[2026-06-12 18:00:03] Node.js not found. Opening browser dashboard for manual upload.
+[2026-06-12 18:00:03] The dashboard contains pre-loaded jobs ready to upload.
+[2026-06-12 18:00:03] To install Node.js: Download from https://nodejs.org/
+[2026-06-12 18:00:03] ==============================
+[2026-06-12 18:00:03] Daily Job Agent Complete
+[2026-06-12 18:00:03] ==============================
+[2026-06-12 21:54:24] ==============================
+[2026-06-12 21:54:24] Daily Job Agent Started
+[2026-06-12 21:54:24] Date: 12-06-2026
+[2026-06-12 21:54:24] ==============================
+[2026-06-12 21:54:24] Loading local environment variables...
+[2026-06-12 21:54:24] [WARNING] Supabase URL/Key not found in .env. Skipping cloud database sync.
+[2026-06-12 21:54:24] Running local fallback checks...
+[2026-06-12 21:54:24] Opening browser dashboard...
+[2026-06-12 21:54:24] Node.js not installed. (Google Sheets sync skipped)
+[2026-06-12 21:54:24] ==============================
+[2026-06-12 21:54:24] Daily Job Agent Complete
+[2026-06-12 21:54:24] ==============================

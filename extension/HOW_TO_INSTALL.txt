@@ -1,0 +1,59 @@
+# 🎯 Job Search Agent — Chrome Extension Setup
+## One-time setup. Takes 2 minutes.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 1: Load the Extension in Chrome
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Open Chrome browser
+2. Go to: chrome://extensions/
+3. Turn ON "Developer mode" (top-right toggle)
+4. Click "Load unpacked"
+5. Select this folder:
+   📁 C:\Users\neel.chaniyara\Downloads\Neel Ai\Daily Job Agent\extension
+6. Click "Select Folder"
+7. You'll see "Job Search Agent — Neel" appear in the list ✅
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 2: Open the App
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Click the 🧩 Extensions icon in Chrome toolbar
+2. Click "Job Search Agent — Neel"
+3. The app opens as a full-page tab
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 3: Search Jobs
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Click "Search All Job Portals"
+2. Chrome will open background tabs automatically:
+   - Naukri.com (6 search pages)
+   - LinkedIn (via API)
+   - Indeed India (5 search pages)
+   - Internshala (4 search pages)
+3. Each tab closes after extracting jobs
+4. Total time: ~2-3 minutes
+5. Jobs appear in the table automatically
+6. New jobs are saved to your Google Sheet automatically
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+WHY EXTENSION? (Not GAS/server)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ Uses a REAL Chrome browser — Naukri/Indeed see it as YOU browsing
+✅ No CAPTCHA blocks — you have real cookies and browser fingerprint
+✅ No Node.js needed — pure Chrome extension
+✅ No server needed — runs 100% locally in your browser
+✅ No API keys needed — just opens the sites like a real person
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+DAILY USE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Every day:
+1. Click the extension icon in Chrome
+2. Click Search
+3. Done — new jobs are in your Google Sheet
+
+Google Sheet: https://docs.google.com/spreadsheets/d/11jsmc9ctRpoOj0BEwhAA2JTQy46lI5yArINDdjSVhig/edit

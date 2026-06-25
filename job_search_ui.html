@@ -1,0 +1,1642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Job Hunterz N18</title>
+<meta name="description" content="One-click automated job search for analytics and product roles across India">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & ROOT ────────────────────────────────────────────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:          #0d0f1a;
+  --surface:     #121526;
+  --surface2:    #181b30;
+  --surface3:    #222744;
+  --border:      rgba(124, 58, 237, 0.15);
+  --border-dim:  rgba(255, 255, 255, 0.06);
+  --text:        #ffffff;
+  --text2:       #94a3b8;
+  --text3:       #64748b;
+  --accent:      #7c3aed;
+  --accent-glow: rgba(124, 58, 237, 0.3);
+  --green:       #10b981;
+  --red:         #ef4444;
+  --yellow:      #f59e0b;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Background mesh */
+@keyframes meshDrift {
+  0% { background-position: 0% 0%, 100% 100%; }
+  50% { background-position: 50% 30%, 80% 70%; }
+  100% { background-position: 0% 0%, 100% 100%; }
+}
+.bg-mesh {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 40% at 50% 0%, rgba(124,58,237,0.16) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 35% at 90% 95%, rgba(16,185,129,0.06) 0%, transparent 50%);
+  background-size: 200% 200%;
+  animation: meshDrift 25s ease infinite;
+}
+
+.wrap {
+  position: relative; z-index: 1;
+  max-width: 1280px; margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+/* ── HEADER ─────────────────────────────────────────────────────────── */
+header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 24px 0 20px;
+  border-bottom: 1px solid var(--border-dim);
+  margin-bottom: 40px;
+}
+
+.brand { display: flex; align-items: center; gap: 12px; }
+
+.brand-logo-container {
+  width: 38px; height: 38px; border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent), #9333ea);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 0 15px var(--accent-glow);
+}
+
+.brand-logo-svg {
+  width: 18px; height: 18px; fill: white;
+}
+
+.brand-name {
+  font-size: 20px; font-weight: 800; color: var(--text);
+  letter-spacing: -0.5px;
+}
+
+.header-right { display: flex; align-items: center; gap: 12px; }
+
+.pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 16px; border-radius: 20px;
+  font-size: 13px; font-weight: 600; border: 1px solid;
+}
+
+.pill-server {
+  background: rgba(239, 68, 68, 0.1); color: #fca5a5;
+  border-color: rgba(239, 68, 68, 0.25);
+  transition: all 0.4s ease;
+}
+
+.pill-server.online {
+  background: rgba(16, 185, 129, 0.1); color: #6ee7b7;
+  border-color: rgba(16, 185, 129, 0.25);
+}
+
+.pill-server.cloud {
+  background: rgba(245, 158, 11, 0.1); color: #fcd34d;
+  border-color: rgba(245, 158, 11, 0.25);
+}
+
+.pill-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: currentColor; animation: blink 2s infinite;
+}
+
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+.nav-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 16px; border-radius: 20px; border: 1px solid var(--border-dim);
+  background: var(--surface2); color: var(--text);
+  font-family: inherit; font-size: 13px; font-weight: 600;
+  cursor: pointer; text-decoration: none; transition: all 0.2s ease;
+}
+
+.nav-btn:hover { background: var(--surface3); border-color: var(--accent); }
+
+.btn-icon-svg {
+  width: 15px; height: 15px; fill: none; stroke: currentColor;
+}
+
+/* ── HERO ────────────────────────────────────────────────────────────── */
+.hero {
+  text-align: center;
+  padding: 20px 0 48px;
+  animation: fadeUp 0.5s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 14px; border-radius: 20px;
+  background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 11px; font-weight: 700; letter-spacing: 1.2px; color: var(--text2);
+  margin-bottom: 24px;
+}
+
+.info-icon-svg {
+  width: 14px; height: 14px; fill: none; stroke: currentColor;
+}
+
+.hero h1 {
+  font-size: clamp(38px, 5.5vw, 58px);
+  font-weight: 900; line-height: 1.1; letter-spacing: -1.8px;
+  background: linear-gradient(135deg, #a78bfa 0%, #ffffff 50%, #7c3aed 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; margin-bottom: 16px;
+}
+
+.hero-sub {
+  font-size: 16px; color: var(--text2); line-height: 1.6;
+  max-width: 600px; margin: 0 auto 36px;
+}
+
+/* ── SEARCH BUTTON ───────────────────────────────────────────────────── */
+.search-btn-wrap { position: relative; display: inline-block; }
+
+#searchBtn {
+  position: relative; z-index: 1;
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 10px; padding: 16px 48px;
+  border: none; border-radius: 30px; cursor: pointer;
+  font-family: inherit; font-size: 16px; font-weight: 700; color: #ffffff;
+  background: var(--accent);
+  box-shadow: 0 8px 30px rgba(124, 58, 237, 0.4);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#searchBtn:hover {
+  transform: translateY(-2px);
+  background: #6d28d9;
+  box-shadow: 0 12px 40px rgba(124, 58, 237, 0.6);
+}
+
+#searchBtn:active { transform: translateY(0); }
+
+#searchBtn.loading {
+  background: #1e1b4b;
+  box-shadow: none; cursor: not-allowed; transform: none;
+}
+
+.search-icon-svg {
+  width: 18px; height: 18px; fill: none; stroke: currentColor;
+  transition: transform 0.3s;
+}
+
+#searchBtn:hover .search-icon-svg { transform: scale(1.1) rotate(-5deg); }
+#searchBtn.loading .search-icon-svg { animation: spin 1s linear infinite; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.search-note {
+  margin-top: 14px; font-size: 12px; color: var(--text3);
+  animation: fadeUp 0.5s 0.2s ease both;
+}
+
+/* ── PORTALS GRID ────────────────────────────────────────────────────── */
+.portals-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 20px; margin: 40px 0 32px;
+  animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (max-width: 1024px) {
+  .portals-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .portals-grid { grid-template-columns: 1fr; }
+}
+
+.portal-card {
+  background: rgba(18, 21, 38, 0.55);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 24px; padding: 28px 24px;
+  text-align: center; position: relative; overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex; flex-direction: column; align-items: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+}
+
+.portal-card::before {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 4px;
+  background: var(--c, var(--accent));
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.portal-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4), 0 0 25px rgba(124, 58, 237, 0.1);
+  background: rgba(18, 21, 38, 0.75);
+}
+
+.portal-card.searching {
+  border-color: var(--c, var(--accent));
+  box-shadow: 0 0 25px rgba(124, 58, 237, 0.25);
+  animation: pulseGlow 1.5s ease infinite alternate;
+}
+
+@keyframes pulseGlow {
+  0% { box-shadow: 0 0 15px rgba(124, 58, 237, 0.15); }
+  100% { box-shadow: 0 0 30px rgba(124, 58, 237, 0.35); }
+}
+
+.portal-card.done::before { transform: scaleX(1); }
+.portal-card.done { border-color: rgba(16, 185, 129, 0.3); }
+.portal-card.error { border-color: rgba(239, 68, 68, 0.3); }
+
+.portal-icon-container {
+  width: 52px; height: 52px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 16px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.portal-svg {
+  width: 26px; height: 26px;
+}
+
+.portal-name { font-size: 16px; font-weight: 700; color: var(--text); }
+.portal-count { font-size: 32px; font-weight: 900; min-height: 38px; margin: 8px 0 4px; }
+.portal-count.done { color: var(--green); }
+.portal-count.error { color: var(--red); font-size: 16px; }
+.portal-status { font-size: 12px; color: var(--text3); min-height: 18px; margin-bottom: 12px; }
+.portal-status.searching { color: #a78bfa; }
+.portal-status.done { color: var(--green); }
+.portal-status.error { color: var(--red); }
+
+.portal-badge {
+  font-size: 11px; font-weight: 700; color: var(--text2);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 4px 12px; border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.spinner {
+  display: inline-block; width: 14px; height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.1); border-top-color: #a78bfa;
+  border-radius: 50%; animation: spin 0.7s linear infinite;
+  vertical-align: -2px; margin-right: 4px;
+}
+
+/* ── STATS ───────────────────────────────────────────────────────────── */
+.stats-row {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 20px; margin-bottom: 36px;
+}
+
+@media (max-width: 900px) {
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 500px) {
+  .stats-row { grid-template-columns: 1fr; }
+}
+
+.stat {
+  background: rgba(18, 21, 38, 0.45);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 22px; padding: 24px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.stat:hover {
+  border-color: rgba(124, 58, 237, 0.3);
+  box-shadow: 0 12px 36px rgba(124, 58, 237, 0.08);
+  transform: translateY(-4px);
+  background: rgba(18, 21, 38, 0.65);
+}
+
+.stat-val {
+  font-size: 36px; font-weight: 900; line-height: 1;
+  background: linear-gradient(135deg, var(--accent), #a78bfa);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; margin-bottom: 8px;
+  transition: transform 0.3s;
+}
+
+.stat-val.pop { animation: pop 0.35s cubic-bezier(0.4, 0, 0.2, 1); }
+
+.stat-label { font-size: 12px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: var(--text3); }
+.stat-sub { font-size: 11px; color: var(--text3); margin-top: 4px; }
+
+/* ── CONTROLS BAR ────────────────────────────────────────────────────── */
+.controls {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 18px; flex-wrap: wrap;
+}
+
+.input-search {
+  flex: 1; min-width: 240px;
+  background: var(--surface); border: 1px solid var(--border-dim);
+  border-radius: 12px; padding: 12px 18px;
+  font-family: inherit; font-size: 14px; color: var(--text);
+  outline: none; transition: border-color 0.2s;
+}
+
+.input-search:focus { border-color: var(--accent); }
+.input-search::placeholder { color: var(--text3); }
+
+.sel {
+  background: var(--surface); border: 1px solid var(--border-dim);
+  border-radius: 12px; padding: 12px 16px;
+  font-family: inherit; font-size: 13px; color: var(--text2);
+  outline: none; cursor: pointer; transition: border-color 0.2s;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M0 0l6 8 6-8z' fill='%2364748b'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 14px center;
+  padding-right: 36px;
+}
+
+.sel:focus { border-color: var(--accent); }
+
+.result-count {
+  padding: 12px 18px; background: var(--surface);
+  border: 1px solid var(--border-dim); border-radius: 12px;
+  font-size: 13px; color: var(--text3); white-space: nowrap;
+}
+
+.btn-push {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 24px; border: none; border-radius: 12px; cursor: pointer;
+  font-family: inherit; font-size: 14px; font-weight: 700; color: #fff;
+  background: linear-gradient(135deg, var(--green), #059669);
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
+  transition: all 0.3s; white-space: nowrap;
+}
+
+.btn-push:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4); }
+.btn-push:disabled { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: none; }
+
+/* ── TABLE ───────────────────────────────────────────────────────────── */
+.table-wrap {
+  background: var(--surface); border: 1px solid var(--border-dim);
+  border-radius: 20px; overflow: hidden;
+  animation: fadeUp 0.4s 0.15s ease both;
+}
+
+.table-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 24px 16px; border-bottom: 1px solid var(--border-dim);
+}
+
+.table-title {
+  font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 10px;
+}
+
+.badge {
+  display: inline-flex; align-items: center;
+  padding: 2px 10px; border-radius: 8px; font-size: 12px; font-weight: 700;
+  background: rgba(124, 58, 237, 0.15); color: #a78bfa; border: 1px solid var(--border);
+}
+
+.tbl { width: 100%; border-collapse: collapse; }
+.tbl th {
+  padding: 14px 20px; text-align: left;
+  font-size: 10px; font-weight: 700; letter-spacing: 1.2px;
+  text-transform: uppercase; color: var(--text3);
+  background: var(--surface2); border-bottom: 1px solid var(--border-dim);
+  white-space: nowrap;
+}
+
+.tbl td {
+  padding: 16px 20px; font-size: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  vertical-align: middle;
+}
+
+.tbl tr:last-child td { border-bottom: none; }
+.tbl tr:hover td { background: var(--surface2); }
+
+.job-title {
+  font-weight: 700; font-size: 15px; color: var(--text);
+  text-decoration: none; display: block;
+  max-width: 320px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  transition: color 0.2s;
+}
+
+.job-title:hover { color: #a78bfa; }
+
+.job-company {
+  font-size: 12px; color: var(--text2); margin-top: 3px;
+  max-width: 320px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+.loc { font-size: 13px; color: var(--text2); white-space: nowrap; }
+
+.exp-tag {
+  display: inline-block; padding: 3px 9px; border-radius: 6px; font-size: 11px; font-weight: 700;
+  background: rgba(124, 58, 237, 0.12); color: #a78bfa; border: 1px solid rgba(124, 58, 237, 0.2);
+  white-space: nowrap;
+}
+
+.date { font-size: 13px; color: var(--text3); white-space: nowrap; }
+.date.fresh { color: var(--green); font-weight: 600; }
+
+.src-badge {
+  display: inline-flex; padding: 3px 10px; border-radius: 20px;
+  font-size: 11px; font-weight: 700; white-space: nowrap; border: 1px solid;
+}
+
+.src-naukri     { background: rgba(255, 79, 79, 0.12); color: #ff8b8b; border-color: rgba(255, 79, 79, 0.2); }
+.src-linkedin   { background: rgba(10, 102, 194, 0.12); color: #7dd3fc; border-color: rgba(10, 102, 194, 0.2); }
+.src-instahyre  { background: rgba(16, 185, 129, 0.1);  color: #6ee7b7; border-color: rgba(16, 185, 129, 0.2); }
+.src-internshala { background: rgba(2, 132, 199, 0.12); color: #7dd3fc; border-color: rgba(2, 132, 199, 0.2); }
+
+.apply-link {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 8px 16px; border-radius: 8px;
+  border: 1px solid var(--border); color: #a78bfa;
+  font-size: 12px; font-weight: 700; text-decoration: none;
+  transition: all 0.2s; white-space: nowrap;
+}
+
+.apply-link:hover { background: rgba(124, 58, 237, 0.12); border-color: var(--accent); transform: translateY(-1px); }
+
+/* ── EMPTY / LOADING STATES ──────────────────────────────────────────── */
+.state-box {
+  padding: 72px 20px; text-align: center;
+}
+
+.state-icon { font-size: 48px; opacity: 0.35; display: block; margin-bottom: 16px; color: var(--text3); }
+.state-icon.spinning { animation: spin 2s linear infinite; opacity: 0.5; color: var(--accent); }
+.state-title { font-size: 20px; font-weight: 700; color: var(--text2); margin-bottom: 8px; }
+.state-sub { font-size: 14px; color: var(--text3); line-height: 1.6; }
+
+/* Progress bar */
+.progress-wrap { margin-top: 24px; }
+.progress-bar { height: 4px; background: var(--surface2); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), #a78bfa); border-radius: 2px; transition: width 0.5s ease; }
+.progress-label { font-size: 12px; color: var(--text3); text-align: right; margin-top: 6px; }
+
+/* ── TOAST ───────────────────────────────────────────────────────────── */
+#toast {
+  position: fixed; bottom: 28px; right: 28px;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 14px; padding: 16px 20px;
+  display: flex; align-items: flex-start; gap: 12px;
+  max-width: 360px; z-index: 999;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  transform: translateY(120px); opacity: 0;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#toast.show { transform: translateY(0); opacity: 1; }
+.toast-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+.toast-msg { font-size: 13px; line-height: 1.5; color: var(--text2); }
+.toast-title { font-weight: 700; font-size: 14px; margin-bottom: 3px; color: var(--text); }
+
+/* ── SCROLLBAR ───────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+/* ── SETUP MODAL ─────────────────────────────────────────────────────── */
+#setupModal {
+  position: fixed; inset: 0; z-index: 100;
+  background: rgba(6, 10, 20, 0.85); backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+}
+
+.modal-box {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 24px; padding: 40px; max-width: 600px; width: 100%;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+  animation: fadeUp 0.4s ease;
+}
+
+.modal-title { font-size: 24px; font-weight: 800; margin-bottom: 6px; }
+.modal-sub { color: var(--text2); font-size: 14px; margin-bottom: 28px; line-height: 1.6; }
+
+.steps { display: flex; flex-direction: column; gap: 16px; margin-bottom: 28px; }
+.step { display: flex; align-items: flex-start; gap: 14px; }
+.step-num {
+  width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0;
+  background: linear-gradient(135deg, var(--accent), #9333ea);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 800; color: #fff;
+}
+.step-body { flex: 1; }
+.step-title { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+.step-desc { font-size: 13px; color: var(--text2); line-height: 1.5; }
+.step-desc a { color: #a78bfa; text-decoration: none; }
+.step-desc a:hover { text-decoration: underline; }
+.step-desc code {
+  background: rgba(124, 58, 237, 0.15); padding: 1px 7px; border-radius: 5px;
+  font-size: 12px; color: #a78bfa; font-family: monospace;
+}
+
+.url-input-wrap { display: flex; gap: 10px; margin-top: 6px; }
+.url-input {
+  flex: 1; background: var(--surface2); border: 1px solid var(--border-dim);
+  border-radius: 10px; padding: 10px 14px; font-family: inherit; font-size: 13px;
+  color: var(--text); outline: none; transition: border-color 0.2s;
+}
+.url-input:focus { border-color: var(--accent); }
+.url-input::placeholder { color: var(--text3); }
+
+.btn-save {
+  padding: 10px 20px; border: none; border-radius: 10px; cursor: pointer;
+  font-family: inherit; font-size: 14px; font-weight: 700; color: #fff;
+  background: linear-gradient(135deg, var(--accent), #9333ea);
+  transition: all 0.2s;
+}
+.btn-save:hover { transform: translateY(-2px); }
+.btn-save:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+.modal-footer { display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px; }
+
+.btn-dismiss {
+  padding: 11px 24px; border-radius: 12px; cursor: pointer;
+  font-family: inherit; font-size: 14px; font-weight: 600;
+  background: transparent; border: 1px solid var(--border-dim); color: var(--text2);
+  transition: all 0.2s;
+}
+.btn-dismiss:hover { border-color: var(--accent); color: var(--text); }
+
+.btn-start {
+  padding: 11px 24px; border-radius: 12px; cursor: pointer;
+  font-family: inherit; font-size: 14px; font-weight: 700; color: #fff;
+  background: linear-gradient(135deg, var(--accent), #9333ea);
+  border: none; transition: all 0.2s;
+}
+.btn-start:hover { transform: translateY(-2px); }
+.btn-start:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+/* ── SEARCH FILTERS ─────────────────────────────────────────────────── */
+.search-filter-card {
+  display: flex;
+  gap: 24px;
+  background: rgba(18, 21, 38, 0.55);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(124, 58, 237, 0.25);
+  border-radius: 28px;
+  padding: 28px 32px;
+  max-width: 960px;
+  margin: 0 auto 40px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  text-align: left;
+  animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (max-width: 768px) {
+  .search-filter-card {
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px;
+  }
+}
+
+.filter-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.filter-group label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--text2);
+  padding-left: 4px;
+}
+
+.select-wrapper {
+  position: relative;
+}
+
+.filter-select {
+  width: 100%;
+  background: rgba(13, 15, 26, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 16px 20px;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--text);
+  outline: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 20px center;
+  padding-right: 48px;
+}
+
+.filter-select:hover {
+  border-color: rgba(124, 58, 237, 0.45);
+  background: rgba(13, 15, 26, 0.75);
+}
+
+.filter-select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.25);
+  background-color: rgba(13, 15, 26, 0.85);
+}
+
+.filter-select option {
+  background: var(--surface);
+  color: var(--text);
+}
+</style>
+</head>
+<body>
+<div class="bg-mesh"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- SETUP MODAL                                                             -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<div id="setupModal">
+  <div class="modal-box">
+    <div style="width: 44px; height: 44px; border-radius: 10px; background: linear-gradient(135deg, var(--accent), #9333ea); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; box-shadow: 0 0 15px var(--accent-glow);">
+      <svg viewBox="0 0 24 24" fill="white" style="width: 22px; height: 22px;">
+        <path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/>
+      </svg>
+    </div>
+    <div class="modal-title">Welcome — One-Time Setup</div>
+    <div class="modal-sub">
+      This app runs scraping entirely on Google's cloud via Google Apps Script —
+      <strong>no Node.js, no installation needed.</strong>
+      Complete this setup once, and you're done forever.
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Open Google Apps Script</div>
+          <div class="step-desc">
+            Go to <a href="https://script.google.com/" target="_blank">script.google.com</a> &rarr;
+            Click <strong>New Project</strong> &rarr; Delete all existing code
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Paste the Scraper Script</div>
+          <div class="step-desc">
+            Open the file <code>google_apps_script.gs</code> from your project folder.
+            Copy ALL the code and paste it into the Apps Script editor.
+            Click <strong>Save</strong> (Ctrl+S).
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Deploy as Web App</div>
+          <div class="step-desc">
+            Click <strong>Deploy &rarr; New deployment</strong> &rarr; Select type <strong>Web App</strong><br>
+            Execute as: <strong>Me</strong> | Who has access: <strong>Anyone</strong><br>
+            Click Deploy &rarr; <strong>Authorize</strong> when prompted &rarr; Copy the URL
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">Paste Your Web App URL Below</div>
+          <div class="step-desc" style="margin-bottom:8px;">
+            Paste the URL that looks like:<br>
+            <code>https://script.google.com/macros/s/ABC.../exec</code>
+          </div>
+          <div class="url-input-wrap">
+            <input type="text" class="url-input" id="scriptUrlInput"
+              placeholder="https://script.google.com/macros/s/.../exec">
+            <button class="btn-save" onclick="saveUrl()">Save</button>
+          </div>
+          <div id="urlFeedback" style="font-size:12px;margin-top:6px;color:var(--text3);"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-dismiss" onclick="dismissModal()">Already set up — skip</button>
+      <button class="btn-start" id="btnStart" onclick="dismissModal()" disabled>
+        Start Searching &rarr;
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- MAIN APP                                                                -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<div class="wrap">
+
+  <header>
+    <div class="brand">
+      <div class="brand-logo-container">
+        <svg viewBox="0 0 24 24" fill="white" class="brand-logo-svg">
+          <path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/>
+        </svg>
+      </div>
+      <span class="brand-name">Job Hunterz N18</span>
+    </div>
+    <div class="header-right">
+      <div class="pill pill-server" id="serverPill">
+        <span class="pill-dot"></span>
+        <span id="serverLabel">Checking server...</span>
+      </div>
+      <button class="nav-btn" onclick="document.getElementById('setupModal').style.display='flex'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon-svg"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        Configure Sheet
+      </button>
+      <a class="nav-btn" href="https://docs.google.com/spreadsheets/d/11jsmc9ctRpoOj0BEwhAA2JTQy46lI5yArINDdjSVhig/edit" target="_blank">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon-svg"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        View Sheet
+      </a>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="info-icon-svg"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+      AUTOMATED SEARCH PIPELINE
+    </div>
+    <h1>Find Your Dream Job<br>In One Click</h1>
+    <p class="hero-sub">
+      Instant cloud search across top job portals. Applies strict filters to match product and data roles in India, removing duplicates automatically.
+    </p>
+
+    <!-- Local Server Offline Warning -->
+    <div id="localServerWarning" style="display: none; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.25); border-radius: 16px; padding: 16px; margin: 0 auto 24px; text-align: left; max-width: 600px; animation: fadeUp 0.5s ease both;">
+      <div style="display: flex; gap: 12px; align-items: flex-start;">
+        <span style="font-size: 20px; line-height: 1;">⚠️</span>
+        <div>
+          <h4 style="color: #fca5a5; font-weight: 700; margin-bottom: 4px; font-size: 14px;">Local Server Offline</h4>
+          <p style="color: #94a3b8; font-size: 13px; line-height: 1.5; margin: 0;">
+            To see real results and avoid web portal blocks, please start the local server by double-clicking <strong>start.bat</strong> in your project folder.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PREMIUM GLASSMORPHIC SEARCH FILTER CARD -->
+    <div class="search-filter-card">
+      <div class="filter-group">
+        <label for="jobTitleSelect">Job Title</label>
+        <div class="select-wrapper">
+          <select id="jobTitleSelect" class="filter-select">
+            <option value="" disabled selected>Select Job Title</option>
+            <option value="Software Engineer">Software Engineer</option>
+            <option value="Full Stack Developer">Full Stack Developer</option>
+            <option value="Data Scientist">Data Scientist</option>
+            <option value="Data Analyst">Data Analyst</option>
+            <option value="BI Analyst">BI Analyst</option>
+            <option value="Machine Learning Engineer">Machine Learning Engineer</option>
+            <option value="Data Engineer">Data Engineer</option>
+            <option value="Cloud Engineer">Cloud Engineer</option>
+            <option value="DevOps Engineer">DevOps Engineer</option>
+            <option value="Cybersecurity Analyst">Cybersecurity Analyst</option>
+            <option value="Marketing Analyst">Marketing Analyst</option>
+            <option value="BDA">BDA</option>
+            <option value="Human Resources Officer">Human Resources Officer</option>
+            <option value="Sales Representative">Sales Representative</option>
+            <option value="Business Analyst">Business Analyst</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <label for="locationSelect">Location</label>
+        <div class="select-wrapper">
+          <select id="locationSelect" class="filter-select">
+            <option value="" disabled selected>Select Location</option>
+            <option value="Mumbai">Mumbai</option>
+            <option value="Delhi">Delhi</option>
+            <option value="Bengaluru">Bengaluru</option>
+            <option value="Hyderabad">Hyderabad</option>
+            <option value="Pune">Pune</option>
+            <option value="Chennai">Chennai</option>
+            <option value="Ahmedabad">Ahmedabad</option>
+            <option value="Lucknow">Lucknow</option>
+            <option value="Kolkata">Kolkata</option>
+            <option value="Gandhinagar">Gandhinagar</option>
+            <option value="Vadodara">Vadodara</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <label for="experienceSelect">Experience</label>
+        <div class="select-wrapper">
+          <select id="experienceSelect" class="filter-select">
+            <option value="" disabled selected>Select Experience</option>
+            <option value="0-2">0-2 years</option>
+            <option value="3-5">3-5 years</option>
+            <option value="5-7">5-7 years</option>
+            <option value="7-10">7-10 years</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="search-btn-wrap">
+      <button id="searchBtn" onclick="startSearch()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="search-icon-svg" id="btnIcon"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <span id="btnText">Search</span>
+      </button>
+    </div>
+
+    <div class="search-note">
+      Searches for product analyst &middot; data analyst &middot; business analyst &middot; product manager &middot; and 20+ more roles
+    </div>
+  </div>
+
+  <!-- PORTALS PROGRESS GRID -->
+  <div class="portals-grid" id="portalsGrid">
+    <!-- Card 1: Naukri -->
+    <div class="portal-card" id="pc-Naukri" style="--c:#ff4f4f">
+      <div class="portal-icon-container" style="background: rgba(255, 79, 79, 0.1);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#ff4f4f" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="portal-svg">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          <path d="M2 12h20"></path>
+        </svg>
+      </div>
+      <div class="portal-name">Naukri.com</div>
+      <div class="portal-count" id="pcount-Naukri">-</div>
+      <div class="portal-status" id="pstatus-Naukri">Ready</div>
+      <div class="portal-badge">Database Cache</div>
+    </div>
+
+    <!-- Card 2: LinkedIn -->
+    <div class="portal-card" id="pc-LinkedIn" style="--c:#0077b5">
+      <div class="portal-icon-container" style="background: rgba(0, 119, 181, 0.1);">
+        <svg viewBox="0 0 24 24" fill="#0077b5" class="portal-svg">
+          <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+        </svg>
+      </div>
+      <div class="portal-name">LinkedIn</div>
+      <div class="portal-count" id="pcount-LinkedIn">-</div>
+      <div class="portal-status" id="pstatus-LinkedIn">Ready</div>
+      <div class="portal-badge">Real-Time Search</div>
+    </div>
+
+    <!-- Card 3: Instahyre -->
+    <div class="portal-card" id="pc-Instahyre" style="--c:#10b981">
+      <div class="portal-icon-container" style="background: rgba(16, 185, 129, 0.1);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="portal-svg">
+          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+          <line x1="12" y1="9" x2="12" y2="13"></line>
+          <line x1="12" y1="17" x2="12.01" y2="17"></line>
+        </svg>
+      </div>
+      <div class="portal-name">Instahyre</div>
+      <div class="portal-count" id="pcount-Instahyre">-</div>
+      <div class="portal-status" id="pstatus-Instahyre">Ready</div>
+      <div class="portal-badge">Database Cache</div>
+    </div>
+
+    <!-- Card 4: Internshala -->
+    <div class="portal-card" id="pc-Internshala" style="--c:#0284c7">
+      <div class="portal-icon-container" style="background: rgba(2, 132, 199, 0.1);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="portal-svg">
+          <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+          <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"></path>
+        </svg>
+      </div>
+      <div class="portal-name">Internshala</div>
+      <div class="portal-count" id="pcount-Internshala">-</div>
+      <div class="portal-status" id="pstatus-Internshala">Ready</div>
+      <div class="portal-badge">Real-Time Search</div>
+    </div>
+  </div>
+
+  <!-- STATS ROW -->
+  <div class="stats-row">
+    <div class="stat">
+      <div class="stat-val" id="sv-total">-</div>
+      <div class="stat-label">Total Found</div>
+      <div class="stat-sub">across all portals</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val" id="sv-filtered">-</div>
+      <div class="stat-label">After Filters</div>
+      <div class="stat-sub">matching criteria</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val" id="sv-fresh">-</div>
+      <div class="stat-label">Fresh Today</div>
+      <div class="stat-sub">posted last 24-48h</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val" id="sv-sheet">-</div>
+      <div class="stat-label">Added to Sheet</div>
+      <div class="stat-sub">new rows written</div>
+    </div>
+  </div>
+
+  <!-- CONTROLS -->
+  <div class="controls" id="controls" style="display:none;">
+    <input type="text" class="input-search" id="filterText"
+      placeholder="Search job title or company..." oninput="renderTable()">
+    <select class="sel" id="filterSource" onchange="renderTable()">
+      <option value="">All Sources</option>
+      <option value="Naukri">Naukri.com</option>
+      <option value="LinkedIn">LinkedIn</option>
+      <option value="Instahyre">Instahyre</option>
+      <option value="Internshala">Internshala</option>
+    </select>
+    <select class="sel" id="filterDate" onchange="renderTable()">
+      <option value="">Any Date</option>
+      <option value="today">Today</option>
+      <option value="3d">Last 3 Days</option>
+      <option value="7d">Last 7 Days</option>
+      <option value="14d">Last 2 Weeks</option>
+    </select>
+    <div class="result-count" id="resultCount">0 jobs</div>
+    <button class="btn-push" id="pushBtn" onclick="pushToSheets()" disabled>
+      Push to Sheets
+    </button>
+  </div>
+
+  <!-- TABLE -->
+  <div class="table-wrap">
+    <div class="table-head">
+      <div class="table-title">
+        Job Results
+        <span class="badge" id="tblBadge">0</span>
+      </div>
+      <div style="font-size:12px;color:var(--text3);" id="lastUpdated"></div>
+    </div>
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th style="min-width:280px">Job Title / Company</th>
+          <th style="min-width:130px">Location</th>
+          <th style="min-width:110px">Experience</th>
+          <th style="min-width:110px">Posted</th>
+          <th style="min-width:100px">Source</th>
+          <th style="min-width:90px">Apply</th>
+        </tr>
+      </thead>
+      <tbody id="tblBody">
+        <tr>
+          <td colspan="6">
+            <div class="state-box">
+              <span class="state-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:48px;height:48px;"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+              </span>
+              <div class="state-title">Ready to search</div>
+              <div class="state-sub">
+                Click <strong>Search All Job Portals</strong> above.<br>
+                Results will appear here automatically.
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div><!-- /wrap -->
+
+<!-- TOAST -->
+<div id="toast">
+  <div class="toast-icon" id="toastIcon">✓</div>
+  <div>
+    <div class="toast-title" id="toastTitle"></div>
+    <div class="toast-msg" id="toastMsg"></div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════════
+// CONFIGURATION
+// ═══════════════════════════════════════════════════════════════════════
+const SHEET_URL = 'https://docs.google.com/spreadsheets/d/11jsmc9ctRpoOj0BEwhAA2JTQy46lI5yArINDdjSVhig/edit';
+
+// ═══════════════════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════════════════
+let SCRIPT_URL = localStorage.getItem('gasScriptUrl') || '';
+let allJobs = [];
+let displayedJobs = [];
+let isSearching = false;
+let isLocalServer = false;
+
+// ═══════════════════════════════════════════════════════════════════════
+// SERVER STATUS CHECK
+// ═══════════════════════════════════════════════════════════════════════
+async function checkServerStatus() {
+  const pill = document.getElementById('serverPill');
+  const label = document.getElementById('serverLabel');
+  try {
+    const resp = await fetch('http://localhost:3000/api/health', { signal: AbortSignal.timeout(2000) });
+    if (resp.ok) {
+      isLocalServer = true;
+      pill.className = 'pill pill-server online';
+      label.textContent = 'Local Server Online';
+      const warningEl = document.getElementById('localServerWarning');
+      if (warningEl) warningEl.style.display = 'none';
+      return true;
+    }
+  } catch (e) {}
+
+  isLocalServer = false;
+
+  // Check if we are hosted on a remote web server (Vercel)
+  const isRemoteServer = window.location.protocol.startsWith('http') && 
+                         window.location.hostname !== 'localhost' && 
+                         window.location.hostname !== '127.0.0.1';
+
+  if (isRemoteServer) {
+    pill.className = 'pill pill-server online';
+    label.textContent = 'Cloud Server Online';
+    const warningEl = document.getElementById('localServerWarning');
+    if (warningEl) warningEl.style.display = 'none';
+    return true;
+  }
+
+  if (SCRIPT_URL) {
+    pill.className = 'pill pill-server cloud';
+    label.textContent = 'Cloud Mode';
+  } else {
+    pill.className = 'pill pill-server';
+    label.textContent = 'Not configured';
+  }
+
+  const warningEl = document.getElementById('localServerWarning');
+  if (warningEl) warningEl.style.display = 'block';
+  return false;
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════════════
+async function init() {
+  // Check server status first
+  await checkServerStatus();
+
+  // Pre-fill saved URL
+  if (SCRIPT_URL) {
+    document.getElementById('scriptUrlInput').value = SCRIPT_URL;
+    document.getElementById('btnStart').disabled = false;
+  }
+
+  // Check if already configured — skip modal if URL exists, local server runs, or remote server runs
+  const isRemoteServer = window.location.protocol.startsWith('http') && 
+                         window.location.hostname !== 'localhost' && 
+                         window.location.hostname !== '127.0.0.1';
+
+  if (SCRIPT_URL || isLocalServer || isRemoteServer) {
+    document.getElementById('setupModal').style.display = 'none';
+  }
+
+  // Schedule periodic server check
+  setInterval(checkServerStatus, 15000);
+
+  // Load any cached results
+  const cached = sessionStorage.getItem('lastResults');
+  if (cached) {
+    try {
+      const data = JSON.parse(cached);
+      allJobs = (data.jobs || []).filter(j => j.source !== 'Indeed' && j.source !== 'Shine');
+      if (allJobs.length > 0) {
+        applyPortalLog(data.log || []);
+        updateStats(data);
+        renderTable();
+        document.getElementById('controls').style.display = 'flex';
+        document.getElementById('pushBtn').disabled = false;
+        document.getElementById('lastUpdated').textContent =
+          'Last searched: ' + (data.searchTime || 'earlier this session');
+      }
+    } catch(e) {}
+  }
+}
+
+// Run init
+init();
+
+// ═══════════════════════════════════════════════════════════════════════
+// SETUP MODAL
+// ═══════════════════════════════════════════════════════════════════════
+function saveUrl() {
+  const url = document.getElementById('scriptUrlInput').value.trim();
+  if (!url || !url.includes('script.google.com')) {
+    document.getElementById('urlFeedback').textContent = '⚠️ Please enter a valid Google Apps Script URL';
+    document.getElementById('urlFeedback').style.color = 'var(--red)';
+    return;
+  }
+
+  SCRIPT_URL = url;
+  localStorage.setItem('gasScriptUrl', url);
+  document.getElementById('urlFeedback').textContent = '✓ URL saved successfully!';
+  document.getElementById('urlFeedback').style.color = 'var(--green)';
+  document.getElementById('btnStart').disabled = false;
+  checkServerStatus();
+}
+
+function dismissModal() {
+  document.getElementById('setupModal').style.display = 'none';
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// MAIN SEARCH
+// ═══════════════════════════════════════════════════════════════════════
+async function startSearch() {
+  if (isSearching) return;
+
+  const title = document.getElementById('jobTitleSelect').value;
+  const location = document.getElementById('locationSelect').value;
+  const exp = document.getElementById('experienceSelect').value;
+
+  if (!title || !location || !exp) {
+    let missing = [];
+    if (!title) missing.push('Job Title');
+    if (!location) missing.push('Location');
+    if (!exp) missing.push('Experience');
+    
+    showToast('⚠️', 'Selection Required', `Please select ${missing.join(' / ')} before searching.`, 'err');
+    return;
+  }
+
+  // Verify status before running
+  await checkServerStatus();
+
+  const isRemoteServer = window.location.protocol.startsWith('http') && 
+                         window.location.hostname !== 'localhost' && 
+                         window.location.hostname !== '127.0.0.1';
+
+  if (!isLocalServer && !isRemoteServer && !SCRIPT_URL) {
+    document.getElementById('setupModal').style.display = 'flex';
+    showToast('⚠️', 'Setup Required', 'Please configure your Google Apps Script URL first.');
+    return;
+  }
+
+  isSearching = true;
+  allJobs = [];
+  displayedJobs = [];
+
+  // Update button
+  const btn = document.getElementById('searchBtn');
+  btn.classList.add('loading');
+  document.getElementById('btnIcon').innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="search-icon-svg" style="animation: spin 1s linear infinite;"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>`;
+  document.getElementById('btnText').textContent = 'Searching all portals...';
+
+  // Reset portal cards to searching state
+  const portalOrder = ['Naukri','LinkedIn','Instahyre','Internshala'];
+  portalOrder.forEach(name => {
+    const card = document.getElementById('pc-' + name);
+    const count = document.getElementById('pcount-' + name);
+    const status = document.getElementById('pstatus-' + name);
+    card.className = 'portal-card searching';
+    count.textContent = '...';
+    count.className = 'portal-count';
+    status.innerHTML = '<span class="spinner"></span> Scraping...';
+    status.className = 'portal-status searching';
+  });
+
+  // Show loading in table
+  document.getElementById('controls').style.display = 'flex';
+  document.getElementById('pushBtn').disabled = true;
+  document.getElementById('tblBody').innerHTML = `
+    <tr><td colspan="6">
+      <div class="state-box">
+        <span class="state-icon spinning">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:48px;height:48px;"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"/></svg>
+        </span>
+        <div class="state-title">${isLocalServer ? 'Running local scrapers...' : 'Scraping 4 job portals simultaneously...'}</div>
+        <div class="state-sub">
+          ${isLocalServer ? 'Your PC is fetching Naukri, LinkedIn, Instahyre & Internshala.' : (isRemoteServer ? 'Vercel cloud servers are fetching Naukri, LinkedIn, Instahyre & Internshala.' : 'Google\'s cloud servers are fetching Naukri, LinkedIn, Instahyre & Internshala.')}<br>
+          This takes about <strong>30–60 seconds</strong>. Please wait.
+        </div>
+        <div class="progress-wrap" style="max-width:400px;margin:20px auto 0;">
+          <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:5%"></div></div>
+          <div class="progress-label" id="progressLabel">Starting...</div>
+        </div>
+      </div>
+    </td></tr>`;
+
+  // Animate progress bar while waiting
+  const progressSteps = isLocalServer ? [
+    { w: 20, label: 'Connecting to Naukri...' },
+    { w: 45, label: 'Scraping Naukri API...' },
+    { w: 65, label: 'Scraping LinkedIn jobs...' },
+    { w: 85, label: 'Fetching Instahyre...' },
+    { w: 95, label: 'Fetching Internshala...' },
+  ] : [
+    { w: 25, label: 'Connecting to Naukri...' },
+    { w: 50, label: 'Scraping Naukri API...' },
+    { w: 75, label: 'Scraping LinkedIn jobs...' },
+    { w: 90, label: 'Fetching Instahyre...' },
+  ];
+
+  let stepIdx = 0;
+  const progressInterval = setInterval(() => {
+    if (stepIdx < progressSteps.length) {
+      const s = progressSteps[stepIdx++];
+      const fill = document.getElementById('progressFill');
+      const lbl = document.getElementById('progressLabel');
+      if (fill) fill.style.width = s.w + '%';
+      if (lbl) lbl.textContent = s.label;
+    }
+  }, 4000);
+
+  // Call API
+  try {
+    const queryParams = `?titles=${encodeURIComponent(title)}&locations=${encodeURIComponent(location)}&experience=${encodeURIComponent(exp)}`;
+    let url;
+    if (isLocalServer) {
+      url = 'http://localhost:3000/api/search' + queryParams;
+    } else if (isRemoteServer) {
+      url = '/api/search' + queryParams;
+    } else {
+      url = SCRIPT_URL + queryParams + '&action=search&t=' + Date.now();
+    }
+
+    const resp = await fetch(url, {
+      method: 'GET',
+      signal: AbortSignal.timeout(300000) // 5 minute timeout
+    });
+
+    clearInterval(progressInterval);
+
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+
+    const data = await resp.json();
+
+    if (!data.success) throw new Error(data.error || 'Search failed');
+
+    // Show warnings if keys are missing or cache is empty on Vercel
+    if (isRemoteServer && data.diagnostics) {
+      const diag = data.diagnostics;
+      if (!diag.hasScraperApiKey) {
+        showToast('⚠️', 'ScraperAPI Key Missing', 'SCRAPER_API_KEY is not set in Vercel environment variables. LinkedIn will be blocked.', 'err');
+      } else if (!diag.hasSupabaseUrl || !diag.hasSupabaseKey) {
+        showToast('⚠️', 'Supabase Keys Missing', 'Supabase credentials are not configured in Vercel environment variables.', 'err');
+      } else {
+        const naukriLog = (data.log || []).find(l => l.portal === 'Naukri');
+        const instahyreLog = (data.log || []).find(l => l.portal === 'Instahyre');
+        if (naukriLog && instahyreLog && naukriLog.found === 0 && instahyreLog.found === 0) {
+          showToast('ℹ️', 'Database Cache Empty', 'Supabase database is empty. Trigger a scrape via /api/scrape?portal=naukri once to load jobs.', 'err');
+        }
+      }
+    }
+
+    // Store results (Indeed and Shine are excluded from frontend display)
+    allJobs = (data.jobs || []).filter(j => j.source !== 'Indeed' && j.source !== 'Shine');
+    data.searchTime = new Date().toLocaleTimeString();
+    sessionStorage.setItem('lastResults', JSON.stringify(data));
+
+    // Update portal cards from log
+    applyPortalLog(data.log || []);
+
+    // Update stats
+    updateStats(data);
+
+    // Render table
+    renderTable();
+
+    // Enable push button
+    document.getElementById('pushBtn').disabled = allJobs.length === 0;
+
+    // Update last time
+    document.getElementById('lastUpdated').textContent = 'Last searched: ' + data.searchTime;
+
+    // Show success toast
+    const portalsOk = (data.log || []).filter(l => l.portal !== 'Indeed' && l.portal !== 'Shine' && l.status === 'ok').length;
+    const addedText = data.added !== undefined ? `. ${data.added} new jobs added to sheet.` : '.';
+    showToast('✓', 'Search Complete!',
+      `Found ${allJobs.length} jobs across ${portalsOk} portals${addedText}`);
+
+  } catch (err) {
+    clearInterval(progressInterval);
+    console.error('Search error:', err);
+
+    // Mark all portals as failed
+    portalOrder.forEach(name => {
+      const card = document.getElementById('pc-' + name);
+      card.className = 'portal-card error';
+      document.getElementById('pcount-' + name).textContent = '-';
+      document.getElementById('pstatus-' + name).textContent = 'Failed';
+    });
+
+    let errMsg = err.message;
+    if (err.name === 'TimeoutError') errMsg = 'Request timed out. Server or Google Script took too long.';
+    if (errMsg.includes('Failed to fetch')) {
+      errMsg = isLocalServer ? 
+        'Could not reach local server. Make sure you launch it using server.ps1!' : 
+        'Network error. Check your internet connection.';
+    }
+
+    document.getElementById('tblBody').innerHTML = `
+      <tr><td colspan="6">
+        <div class="state-box">
+          <span class="state-icon">✗</span>
+          <div class="state-title">Search Failed</div>
+          <div class="state-sub">
+            ${escHtml(errMsg)}<br><br>
+            <strong>Troubleshooting tips:</strong><br>
+            ${isLocalServer ? 
+              '• Verify that the server.ps1 backend is still running.<br>• Try refreshing this page.' :
+              '• Make sure you deployed the Apps Script with "Anyone" access.<br>• Try clicking Deploy → Manage deployments → check it\'s active.'
+            }
+          </div>
+        </div>
+      </td></tr>`;
+
+    showToast('✗', 'Search Failed', errMsg, 'err');
+  }
+
+  // Reset button
+  isSearching = false;
+  btn.classList.remove('loading');
+  document.getElementById('btnIcon').innerHTML = `<circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>`;
+  document.getElementById('btnText').textContent = 'Search Again';
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// UPDATE PORTAL CARDS FROM LOG
+// ═══════════════════════════════════════════════════════════════════════
+function applyPortalLog(log) {
+  const logMap = {};
+  for (const entry of log) {
+    logMap[entry.portal] = entry;
+  }
+
+  const sourceCounts = {};
+  for (const job of allJobs) {
+    sourceCounts[job.source] = (sourceCounts[job.source] || 0) + 1;
+  }
+
+  const portalOrder = ['Naukri','LinkedIn','Instahyre','Internshala'];
+  portalOrder.forEach(name => {
+    const card = document.getElementById('pc-' + name);
+    const countEl = document.getElementById('pcount-' + name);
+    const statusEl = document.getElementById('pstatus-' + name);
+    const entry = logMap[name];
+    const displayCount = sourceCounts[name] || (entry ? entry.found : 0);
+
+    if (entry) {
+      if (entry.status === 'ok') {
+        card.className = 'portal-card done';
+        countEl.textContent = displayCount;
+        countEl.className = 'portal-count done';
+        statusEl.innerHTML = '✓ Done';
+        statusEl.className = 'portal-status done';
+      } else {
+        card.className = 'portal-card error';
+        countEl.innerHTML = '✗';
+        countEl.className = 'portal-count error';
+        statusEl.textContent = 'Failed';
+        statusEl.className = 'portal-status error';
+      }
+    } else {
+      if (displayCount > 0) {
+        card.className = 'portal-card done';
+        countEl.textContent = displayCount;
+        countEl.className = 'portal-count done';
+        statusEl.innerHTML = '✓ Done';
+        statusEl.className = 'portal-status done';
+      } else {
+        card.className = 'portal-card';
+        countEl.textContent = '-';
+        statusEl.textContent = 'No results';
+      }
+    }
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// UPDATE STATS
+// ═══════════════════════════════════════════════════════════════════════
+function updateStats(data) {
+  const freshCount = allJobs.filter(j => {
+    const d = (j.datePosted || '').toLowerCase();
+    return d === 'today' || d.includes('hour') || d === '1 day ago';
+  }).length;
+
+  setStat('sv-total', allJobs.length);
+  setStat('sv-filtered', allJobs.length);
+  setStat('sv-fresh', freshCount);
+  setStat('sv-sheet', data.added || 0);
+}
+
+function setStat(id, val) {
+  const el = document.getElementById(id);
+  el.textContent = val;
+  el.classList.add('pop');
+  setTimeout(() => el.classList.remove('pop'), 400);
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// RENDER TABLE
+// ═══════════════════════════════════════════════════════════════════════
+function renderTable() {
+  const textQ = document.getElementById('filterText').value.toLowerCase().trim();
+  const srcQ = document.getElementById('filterSource').value;
+  const dateQ = document.getElementById('filterDate').value;
+
+  displayedJobs = allJobs.filter(job => {
+    if (textQ) {
+      const hay = ((job.jobTitle || '') + ' ' + (job.companyName || '')).toLowerCase();
+      if (!hay.includes(textQ)) return false;
+    }
+
+    if (srcQ && job.source !== srcQ) return false;
+
+    if (dateQ) {
+      const d = (job.datePosted || '').toLowerCase();
+      if (dateQ === 'today' && !d.match(/today|hour/)) return false;
+      if (dateQ === '3d') {
+        if (d.includes('week') || d.includes('month')) return false;
+        const dm = d.match(/(\d+)\s*day/);
+        if (dm && parseInt(dm[1]) > 3) return false;
+      }
+      if (dateQ === '7d') {
+        if (d.includes('month')) return false;
+        if (d.match(/(\d+)\s*week/) && parseInt(d.match(/(\d+)\s*week/)[1]) > 1) return false;
+      }
+      if (dateQ === '14d') {
+        if (d.includes('month')) return false;
+      }
+    }
+
+    return true;
+  });
+
+  document.getElementById('resultCount').textContent = displayedJobs.length + ' jobs';
+  document.getElementById('tblBadge').textContent = displayedJobs.length;
+
+  if (displayedJobs.length === 0 && allJobs.length > 0) {
+    document.getElementById('tblBody').innerHTML = `
+      <tr><td colspan="6">
+        <div class="state-box">
+          <span class="state-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:48px;height:48px;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          </span>
+          <div class="state-title">No jobs match filters</div>
+          <div class="state-sub">Try adjusting the filters above.</div>
+        </div>
+      </td></tr>`;
+    return;
+  }
+
+  document.getElementById('tblBody').innerHTML = displayedJobs.map((job, i) => {
+    const isFresh = /today|hour|^1 day/i.test(job.datePosted || '');
+    const srcClass = 'src-' + (job.source || '').toLowerCase().replace('.com', '');
+    const delay = Math.min(i * 0.015, 0.6);
+
+    return `<tr style="animation: fadeIn .3s ${delay}s both; opacity:0;">
+      <td style="min-width:280px;">
+        <a href="${escHtml(job.jobUrl || '#')}" target="_blank" class="job-title"
+          title="${escHtml(job.jobTitle)}">${escHtml(job.jobTitle || 'Unknown')}</a>
+        <div class="job-company">🏢 ${escHtml(job.companyName || 'Not mentioned')}</div>
+      </td>
+      <td><span class="loc">📍 ${escHtml(job.location || 'India')}</span></td>
+      <td><span class="exp-tag">${escHtml(job.experience || 'Not mentioned')}</span></td>
+      <td><span class="date${isFresh ? ' fresh' : ''}">${isFresh ? '🔥 ' : ''}${escHtml(job.datePosted || 'Not mentioned')}</span></td>
+      <td><span class="src-badge ${srcClass}">${escHtml(job.source || '')}</span></td>
+      <td><a href="${escHtml(job.jobUrl || '#')}" target="_blank" class="apply-link">Apply &rarr;</a></td>
+    </tr>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// PUSH TO SHEETS
+// ═══════════════════════════════════════════════════════════════════════
+async function pushToSheets() {
+  const isRemoteServer = window.location.protocol.startsWith('http') && 
+                         window.location.hostname !== 'localhost' && 
+                         window.location.hostname !== '127.0.0.1';
+
+  if (!SCRIPT_URL && !isRemoteServer && !isLocalServer) return;
+  if (displayedJobs.length === 0) return;
+
+  const btn = document.getElementById('pushBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Pushing...';
+
+  try {
+    let url = SCRIPT_URL;
+    let bodyObj = {
+      action: 'upload',
+      jobs: displayedJobs.map(j => ({
+        jobTitle: j.jobTitle,
+        companyName: j.companyName,
+        location: j.location,
+        experience: j.experience,
+        datePosted: j.datePosted,
+        jobUrl: j.jobUrl,
+        source: j.source
+      }))
+    };
+
+    if (isLocalServer) {
+      url = 'http://localhost:3000/api/upload';
+      bodyObj.appsScriptUrl = SCRIPT_URL;
+    } else if (isRemoteServer) {
+      url = '/api/upload';
+      bodyObj.appsScriptUrl = SCRIPT_URL;
+    }
+
+    const resp = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(bodyObj),
+      signal: AbortSignal.timeout(30000)
+    });
+
+    const data = await resp.json();
+    if (!data.success) throw new Error(data.error || 'Upload failed');
+    
+    const added = data.added || 0;
+    setStat('sv-sheet', added);
+    btn.textContent = `✓ ${added} added to Sheet`;
+    showToast('📊', 'Sheet Updated!', `${added} new jobs added to your Google Sheet.`);
+
+  } catch (err) {
+    if (!isLocalServer && !isRemoteServer && SCRIPT_URL) {
+      // Fallback: no-cors direct call to Apps Script (only in pure GAS mode)
+      try {
+        await fetch(SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'upload', jobs: displayedJobs })
+        });
+        btn.textContent = '✓ Sent to Sheet';
+        showToast('📊', 'Sent to Sheet!', 'Jobs have been pushed to Google Sheets.');
+      } catch (e) {
+        btn.disabled = false;
+        btn.textContent = 'Push to Sheets';
+        showToast('✗', 'Push Failed', err.message, 'err');
+      }
+    } else {
+      btn.disabled = false;
+      btn.textContent = 'Push to Sheets';
+      showToast('✗', 'Push Failed', err.message, 'err');
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════════════════════════════════
+let toastTimer = null;
+function showToast(icon, title, msg, type = '') {
+  const el = document.getElementById('toast');
+  document.getElementById('toastIcon').innerHTML = icon;
+  document.getElementById('toastTitle').textContent = title;
+  document.getElementById('toastMsg').textContent = msg;
+  el.style.borderColor = type === 'err' ? 'rgba(239,68,68,.3)' : 'rgba(124,58,237,.3)';
+  el.className = 'show';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.className = '', 5000);
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════════════════════════════
+function escHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// Inject fadeIn keyframes
+const style = document.createElement('style');
+style.textContent = `@keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }`;
+document.head.appendChild(style);
+</script>
+</body>
+</html>

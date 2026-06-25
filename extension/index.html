@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎯 Job Search Agent — Neel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#05080f;--s1:#0c1524;--s2:#111e32;--s3:#16263e;
+  --b1:rgba(99,102,241,.14);--b2:rgba(255,255,255,.055);
+  --tx:#f1f5f9;--tx2:#94a3b8;--tx3:#64748b;
+  --ac:#6366f1;--ac2:#8b5cf6;--ac3:#a78bfa;
+  --gr:#10b981;--rd:#ef4444;--yw:#f59e0b;
+  --glow:rgba(99,102,241,.28);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;-webkit-font-smoothing:antialiased}
+.mesh{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse 70% 50% at 10% 0%,rgba(99,102,241,.08) 0%,transparent 60%),
+             radial-gradient(ellipse 60% 40% at 90% 100%,rgba(139,92,246,.07) 0%,transparent 60%)}
+.app{position:relative;z-index:1;max-width:1340px;margin:0 auto;padding:0 24px 80px}
+
+/* ── HEADER ── */
+header{display:flex;align-items:center;justify-content:space-between;padding:22px 0 18px;border-bottom:1px solid var(--b2);margin-bottom:36px}
+.brand{display:flex;align-items:center;gap:13px}
+.brand-icon{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--ac),var(--ac2));display:flex;align-items:center;justify-content:center;font-size:21px;box-shadow:0 0 22px var(--glow);flex-shrink:0}
+.brand-name{font-size:17px;font-weight:800;letter-spacing:-.3px;background:linear-gradient(135deg,#fff 20%,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.brand-sub{font-size:11.5px;color:var(--tx3);margin-top:1px}
+.hdr-right{display:flex;align-items:center;gap:12px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;border:1px solid;transition:all .3s}
+.chip-status{background:rgba(239,68,68,.1);color:#fca5a5;border-color:rgba(239,68,68,.2)}
+.chip-status.ok{background:rgba(16,185,129,.1);color:#6ee7b7;border-color:rgba(16,185,129,.2)}
+.dot{width:7px;height:7px;border-radius:50%;background:currentColor;animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.btn-link{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;border-radius:10px;border:1px solid var(--b2);background:var(--s2);color:var(--tx2);font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;text-decoration:none;transition:all .2s}
+.btn-link:hover{border-color:var(--ac);color:var(--tx)}
+
+/* ── HERO ── */
+.hero{text-align:center;padding:8px 0 44px;animation:fadeUp .5s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.eyebrow{display:inline-flex;align-items:center;gap:7px;padding:5px 16px;border-radius:20px;background:rgba(99,102,241,.1);border:1px solid var(--b1);font-size:11.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--ac3);margin-bottom:20px}
+.hero h1{font-size:clamp(34px,4.5vw,54px);font-weight:900;line-height:1.07;letter-spacing:-1.5px;background:linear-gradient(150deg,#fff 0%,#c4b5fd 55%,#6366f1 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:14px}
+.hero-sub{font-size:15.5px;color:var(--tx2);line-height:1.7;max-width:480px;margin:0 auto 32px}
+
+/* ── SEARCH BUTTON ── */
+.sbtn-wrap{position:relative;display:inline-block}
+.sbtn-glow{position:absolute;inset:-2px;border-radius:22px;background:linear-gradient(135deg,var(--ac),var(--ac2));filter:blur(14px);opacity:0;transition:opacity .3s;z-index:0}
+.sbtn-wrap:hover .sbtn-glow{opacity:.5}
+#searchBtn{position:relative;z-index:1;display:inline-flex;align-items:center;justify-content:center;gap:12px;padding:17px 58px;border:none;border-radius:20px;cursor:pointer;font-family:'Inter',sans-serif;font-size:17px;font-weight:800;letter-spacing:-.3px;color:#fff;background:linear-gradient(135deg,var(--ac) 0%,var(--ac2) 100%);box-shadow:0 8px 32px var(--glow),0 2px 8px rgba(0,0,0,.4);transition:all .3s cubic-bezier(.4,0,.2,1);min-width:270px}
+#searchBtn:hover{transform:translateY(-3px);box-shadow:0 14px 48px var(--glow),0 4px 16px rgba(0,0,0,.5)}
+#searchBtn:active{transform:translateY(0)}
+#searchBtn.busy{background:linear-gradient(135deg,#2d3748,#1a202c);box-shadow:none;cursor:not-allowed;transform:none}
+#searchBtn.busy .bico{animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.bico{font-size:19px;transition:transform .3s}
+#searchBtn:hover .bico{transform:scale(1.15)}
+.search-note{margin-top:11px;font-size:11.5px;color:var(--tx3)}
+
+/* ── PORTALS GRID ── */
+.portals{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:32px 0 26px;animation:fadeUp .5s .08s ease both}
+.pc{background:var(--s1);border:1px solid var(--b2);border-radius:18px;padding:20px 14px;text-align:center;position:relative;overflow:hidden;transition:all .4s cubic-bezier(.4,0,.2,1)}
+.pc::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--pc,var(--ac));transform:scaleX(0);transform-origin:left;transition:transform .7s cubic-bezier(.4,0,.2,1)}
+.pc.searching{border-color:var(--pc,var(--ac));box-shadow:0 0 18px rgba(99,102,241,.13)}
+.pc.done::after{transform:scaleX(1)}
+.pc.done{border-color:rgba(16,185,129,.18)}
+.pc.err{border-color:rgba(239,68,68,.18)}
+.pe{font-size:26px;margin-bottom:7px;display:block}
+.pn{font-size:13px;font-weight:700;color:var(--tx)}
+.pct{font-size:22px;font-weight:900;min-height:28px;margin:5px 0}
+.pct.ok{color:var(--gr)}
+.pct.er{color:var(--rd);font-size:13px}
+.ps{font-size:11px;color:var(--tx3);min-height:15px}
+.ps.on{color:var(--ac3)}
+.ps.ok{color:var(--gr)}
+.ps.er{color:var(--rd)}
+.sp{display:inline-block;width:11px;height:11px;border:2px solid rgba(255,255,255,.1);border-top-color:var(--ac3);border-radius:50%;animation:spin .7s linear infinite;vertical-align:-2px;margin-right:3px}
+
+/* ── STATS ── */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:26px}
+.stat{background:var(--s1);border:1px solid var(--b2);border-radius:16px;padding:18px 18px 16px;transition:border-color .3s}
+.stat:hover{border-color:var(--b1)}
+.sv{font-size:34px;font-weight:900;line-height:1;background:linear-gradient(135deg,var(--ac),var(--ac2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:4px}
+.sv.pop{animation:pop .35s cubic-bezier(.4,0,.2,1)}
+@keyframes pop{0%{transform:scale(1.15)}100%{transform:scale(1)}}
+.sl{font-size:10.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--tx3)}
+.ss{font-size:11px;color:var(--tx3);margin-top:2px}
+
+/* ── CONTROLS ── */
+.controls{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.fi{flex:1;min-width:210px;background:var(--s1);border:1px solid var(--b2);border-radius:12px;padding:10px 15px;font-family:inherit;font-size:13.5px;color:var(--tx);outline:none;transition:border-color .2s}
+.fi:focus{border-color:var(--ac)}
+.fi::placeholder{color:var(--tx3)}
+.fs{background:var(--s1);border:1px solid var(--b2);border-radius:12px;padding:10px 13px;font-family:inherit;font-size:13px;color:var(--tx2);outline:none;cursor:pointer;transition:border-color .2s;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M0 0l6 8 6-8z' fill='%2364748b'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 11px center;padding-right:28px}
+.fs:focus{border-color:var(--ac)}
+.rcount{padding:10px 15px;background:var(--s1);border:1px solid var(--b2);border-radius:12px;font-size:13px;color:var(--tx3);white-space:nowrap}
+.btn-push{display:inline-flex;align-items:center;gap:7px;padding:10px 20px;border:none;border-radius:12px;cursor:pointer;font-family:inherit;font-size:13.5px;font-weight:700;color:#fff;background:linear-gradient(135deg,var(--gr),#059669);box-shadow:0 4px 14px rgba(16,185,129,.28);transition:all .3s;white-space:nowrap}
+.btn-push:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(16,185,129,.38)}
+.btn-push:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+
+/* ── TABLE ── */
+.tbl-wrap{background:var(--s1);border:1px solid var(--b2);border-radius:20px;overflow:hidden;animation:fadeUp .4s .12s ease both}
+.tbl-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 13px;border-bottom:1px solid var(--b2)}
+.tbl-title{font-size:15px;font-weight:700;display:flex;align-items:center;gap:9px}
+.badge{display:inline-flex;padding:2px 9px;border-radius:7px;font-size:12px;font-weight:700;background:rgba(99,102,241,.13);color:var(--ac3);border:1px solid var(--b1)}
+table{width:100%;border-collapse:collapse}
+th{padding:11px 15px;text-align:left;font-size:10px;font-weight:700;letter-spacing:.9px;text-transform:uppercase;color:var(--tx3);background:var(--s2);border-bottom:1px solid var(--b2);white-space:nowrap}
+td{padding:12px 15px;font-size:13px;border-bottom:1px solid rgba(255,255,255,.028);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--s2)}
+.jt{font-weight:700;font-size:13.5px;color:var(--tx);text-decoration:none;display:block;max-width:290px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;transition:color .2s}
+.jt:hover{color:var(--ac3)}
+.jc{font-size:11.5px;color:var(--tx2);margin-top:3px;max-width:290px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.loc{font-size:12.5px;color:var(--tx2);white-space:nowrap}
+.etag{display:inline-block;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:700;background:rgba(99,102,241,.1);color:var(--ac3);border:1px solid rgba(99,102,241,.18);white-space:nowrap}
+.dtag{font-size:11.5px;color:var(--tx3);white-space:nowrap}
+.dtag.fresh{color:var(--gr);font-weight:600}
+.sbdg{display:inline-flex;padding:3px 9px;border-radius:20px;font-size:10.5px;font-weight:700;white-space:nowrap;border:1px solid}
+.s-naukri{background:rgba(99,102,241,.12);color:#a5b4fc;border-color:rgba(99,102,241,.18)}
+.s-linkedin{background:rgba(10,102,194,.12);color:#7dd3fc;border-color:rgba(10,102,194,.18)}
+.s-indeed{background:rgba(37,87,167,.13);color:#93c5fd;border-color:rgba(37,87,167,.2)}
+.s-internshala{background:rgba(245,158,11,.1);color:#fcd34d;border-color:rgba(245,158,11,.18)}
+.al{display:inline-flex;align-items:center;gap:4px;padding:5px 12px;border-radius:8px;border:1px solid var(--b1);color:var(--ac3);font-size:11.5px;font-weight:700;text-decoration:none;transition:all .2s;white-space:nowrap}
+.al:hover{background:rgba(99,102,241,.1);border-color:var(--ac);transform:translateY(-1px)}
+
+/* ── EMPTY / LOADING ── */
+.empty{padding:68px 20px;text-align:center}
+.empty-ico{font-size:52px;opacity:.3;display:block;margin-bottom:14px}
+.empty-ico.spin{animation:spin 1.5s linear infinite;opacity:.45}
+.empty-t{font-size:19px;font-weight:700;color:var(--tx2);margin-bottom:7px}
+.empty-s{font-size:13.5px;color:var(--tx3);line-height:1.65}
+.pbar-wrap{max-width:420px;margin:22px auto 0}
+.pbar{height:4px;background:var(--s3);border-radius:2px;overflow:hidden}
+.pbar-fill{height:100%;background:linear-gradient(90deg,var(--ac),var(--ac2));border-radius:2px;transition:width .8s ease}
+.pbar-lbl{font-size:11.5px;color:var(--tx3);text-align:right;margin-top:5px}
+
+/* ── TOAST ── */
+#toast{position:fixed;bottom:26px;right:26px;background:var(--s2);border:1px solid var(--b1);border-radius:14px;padding:14px 18px;display:flex;align-items:flex-start;gap:11px;max-width:340px;z-index:999;box-shadow:0 8px 32px rgba(0,0,0,.5);transform:translateY(120px);opacity:0;transition:all .4s cubic-bezier(.4,0,.2,1)}
+#toast.show{transform:translateY(0);opacity:1}
+.tico{font-size:19px;flex-shrink:0;margin-top:1px}
+.tt{font-weight:700;font-size:13.5px;margin-bottom:2px}
+.tm{font-size:12.5px;color:var(--tx2);line-height:1.45}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--s3);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--ac)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1000px){.portals{grid-template-columns:repeat(2,1fr)}.stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:680px){.hero h1{font-size:30px}.tbl-wrap{overflow-x:auto}table{min-width:660px}}
+</style>
+</head>
+<body>
+<div class="mesh"></div>
+<div class="app">
+
+<!-- HEADER -->
+<header>
+  <div class="brand">
+    <div class="brand-icon">🎯</div>
+    <div>
+      <div class="brand-name">Job Search Agent</div>
+      <div class="brand-sub">Naukri · LinkedIn · Indeed · Internshala</div>
+    </div>
+  </div>
+  <div class="hdr-right">
+    <div class="chip chip-status" id="extChip">
+      <div class="dot"></div>
+      <span id="extLabel">Extension Active ✓</span>
+    </div>
+    <a class="btn-link" href="https://docs.google.com/spreadsheets/d/11jsmc9ctRpoOj0BEwhAA2JTQy46lI5yArINDdjSVhig/edit" target="_blank">📊 Google Sheet</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="eyebrow">⚡ Real Browser · No CAPTCHA · 4 Portals</div>
+  <h1>Find Your Dream Job<br>In One Click</h1>
+  <p class="hero-sub">Opens Naukri, Indeed, LinkedIn & Internshala in the background as real browser tabs — completely bypasses all blocks.</p>
+
+  <div class="sbtn-wrap">
+    <div class="sbtn-glow"></div>
+    <button id="searchBtn" onclick="startSearch()">
+      <span class="bico" id="bico">🔍</span>
+      <span id="btxt">Search All Job Portals</span>
+    </button>
+  </div>
+  <div class="search-note">0–3 years · India & Remote · product/data/business analyst · PM · and 20+ more roles</div>
+</div>
+
+<!-- PORTAL PROGRESS -->
+<div class="portals" id="portalsGrid">
+  <div class="pc" id="pc-Naukri" style="--pc:#6366f1">
+    <span class="pe">💼</span>
+    <div class="pn">Naukri.com</div>
+    <div class="pct" id="pct-Naukri">—</div>
+    <div class="ps" id="ps-Naukri">Ready</div>
+  </div>
+  <div class="pc" id="pc-LinkedIn" style="--pc:#0a66c2">
+    <span class="pe">🔗</span>
+    <div class="pn">LinkedIn</div>
+    <div class="pct" id="pct-LinkedIn">—</div>
+    <div class="ps" id="ps-LinkedIn">Ready</div>
+  </div>
+  <div class="pc" id="pc-Indeed" style="--pc:#2557a7">
+    <span class="pe">🔎</span>
+    <div class="pn">Indeed</div>
+    <div class="pct" id="pct-Indeed">—</div>
+    <div class="ps" id="ps-Indeed">Ready</div>
+  </div>
+  <div class="pc" id="pc-Internshala" style="--pc:#f59e0b">
+    <span class="pe">🎓</span>
+    <div class="pn">Internshala</div>
+    <div class="pct" id="pct-Internshala">—</div>
+    <div class="ps" id="ps-Internshala">Ready</div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat"><div class="sv" id="sv-total">—</div><div class="sl">Total Found</div><div class="ss">all portals</div></div>
+  <div class="stat"><div class="sv" id="sv-filtered">—</div><div class="sl">After Filters</div><div class="ss">matching criteria</div></div>
+  <div class="stat"><div class="sv" id="sv-fresh">—</div><div class="sl">Fresh Today</div><div class="ss">posted today</div></div>
+  <div class="stat"><div class="sv" id="sv-sheet">—</div><div class="sl">Added to Sheet</div><div class="ss">new rows written</div></div>
+</div>
+
+<!-- CONTROLS -->
+<div class="controls" id="controls" style="display:none">
+  <input class="fi" id="ftext" type="text" placeholder="🔍 Search title or company..." oninput="render()">
+  <select class="fs" id="fsrc" onchange="render()">
+    <option value="">All Sources</option>
+    <option value="Naukri">Naukri</option>
+    <option value="LinkedIn">LinkedIn</option>
+    <option value="Indeed">Indeed</option>
+    <option value="Internshala">Internshala</option>
+  </select>
+  <select class="fs" id="fdate" onchange="render()">
+    <option value="">Any Date</option>
+    <option value="today">Today</option>
+    <option value="3d">Last 3 Days</option>
+    <option value="7d">Last 7 Days</option>
+    <option value="2w">Last 2 Weeks</option>
+  </select>
+  <div class="rcount" id="rcount">0 jobs</div>
+  <button class="btn-push" id="pushBtn" onclick="pushToSheets()" disabled>📊 Push to Sheets</button>
+</div>
+
+<!-- TABLE -->
+<div class="tbl-wrap">
+  <div class="tbl-head">
+    <div class="tbl-title">Job Results <span class="badge" id="tbl-badge">0</span></div>
+    <div style="font-size:11.5px;color:var(--tx3)" id="lastupdated"></div>
+  </div>
+  <table>
+    <thead><tr>
+      <th style="min-width:280px">Job Title / Company</th>
+      <th style="min-width:130px">Location</th>
+      <th style="min-width:110px">Experience</th>
+      <th style="min-width:110px">Posted</th>
+      <th style="min-width:100px">Source</th>
+      <th style="min-width:85px">Apply</th>
+    </tr></thead>
+    <tbody id="tbody">
+      <tr><td colspan="6"><div class="empty">
+        <span class="empty-ico">🚀</span>
+        <div class="empty-t">Ready to search</div>
+        <div class="empty-s">Click <strong>Search All Job Portals</strong>.<br>The extension opens each site as a real browser tab,<br>extracts jobs, and shows them here automatically.</div>
+      </div></td></tr>
+    </tbody>
+  </table>
+</div>
+
+</div><!-- /app -->
+
+<div id="toast"><div class="tico" id="tico">✅</div><div><div class="tt" id="tt"></div><div class="tm" id="tm"></div></div></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════
+// CONFIG
+// ═══════════════════════════════════════════════════════════════════
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzTcviZHYe6Eq9QR_vzVyIuvpBsAiawAwTPUSFwURqVN8W8y4AbS72W66ZgylwR1tg/exec';
+
+// ═══════════════════════════════════════════════════════════════════
+// SEARCH URLS — what tabs to open per portal
+// ═══════════════════════════════════════════════════════════════════
+const NAUKRI_URLS = [
+  'https://www.naukri.com/product-analyst-jobs?experience=0&experience=1&experience=2&experience=3',
+  'https://www.naukri.com/data-analyst-jobs?experience=0&experience=1&experience=2&experience=3',
+  'https://www.naukri.com/business-analyst-jobs?experience=0&experience=1&experience=2&experience=3',
+  'https://www.naukri.com/product-manager-jobs?experience=0&experience=1&experience=2&experience=3',
+  'https://www.naukri.com/analytics-engineer-jobs?experience=0&experience=1&experience=2&experience=3',
+  'https://www.naukri.com/growth-analyst-jobs?experience=0&experience=1&experience=2&experience=3',
+];
+
+const LINKEDIN_KEYWORDS = [
+  'product analyst', 'data analyst', 'business analyst',
+  'product manager', 'growth analyst', 'analytics engineer',
+  'decision scientist', 'business intelligence analyst', 'associate product manager'
+];
+
+const INDEED_URLS = [
+  'https://in.indeed.com/jobs?q=product+analyst&l=India&fromage=7&sort=date',
+  'https://in.indeed.com/jobs?q=data+analyst&l=India&fromage=7&sort=date',
+  'https://in.indeed.com/jobs?q=business+analyst&l=India&fromage=7&sort=date',
+  'https://in.indeed.com/jobs?q=product+manager&l=India&fromage=7&sort=date',
+  'https://in.indeed.com/jobs?q=analytics+engineer&l=India&fromage=7&sort=date',
+];
+
+const INTERNSHALA_URLS = [
+  'https://internshala.com/jobs/product-analyst-jobs-in-india/',
+  'https://internshala.com/jobs/data-analyst-jobs-in-india/',
+  'https://internshala.com/jobs/business-analyst-jobs-in-india/',
+  'https://internshala.com/jobs/product-manager-jobs-in-india/',
+];
+
+// ═══════════════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════════════
+let allJobs = [], displayed = [], busy = false;
+
+// Restore from session
+try {
+  const s = sessionStorage.getItem('jobResults');
+  if (s) {
+    const d = JSON.parse(s);
+    allJobs = d.jobs || [];
+    if (allJobs.length > 0) {
+      updatePortalCard('Naukri', d.counts?.Naukri || 0, 'done');
+      updatePortalCard('LinkedIn', d.counts?.LinkedIn || 0, 'done');
+      updatePortalCard('Indeed', d.counts?.Indeed || 0, 'done');
+      updatePortalCard('Internshala', d.counts?.Internshala || 0, 'done');
+      updateStats();
+      document.getElementById('controls').style.display = 'flex';
+      document.getElementById('pushBtn').disabled = false;
+      document.getElementById('lastupdated').textContent = 'From session: ' + (d.time || '');
+      render();
+    }
+  }
+} catch(e) {}
+
+// Verify extension context
+document.getElementById('extChip').classList.add('ok');
+
+// ═══════════════════════════════════════════════════════════════════
+// MAIN SEARCH ORCHESTRATOR
+// ═══════════════════════════════════════════════════════════════════
+async function startSearch() {
+  if (busy) return;
+  busy = true;
+  allJobs = [];
+
+  setBtn('busy', '⚙️', 'Searching...');
+  ['Naukri','LinkedIn','Indeed','Internshala'].forEach(p => resetPortal(p));
+  document.getElementById('controls').style.display = 'flex';
+  document.getElementById('pushBtn').disabled = true;
+  showLoading('Searching 4 portals in real browser tabs...');
+
+  const counts = {};
+  let step = 0, totalSteps = NAUKRI_URLS.length + LINKEDIN_KEYWORDS.length + INDEED_URLS.length + INTERNSHALA_URLS.length;
+
+  function updateProgress(msg) {
+    step++;
+    const pct = Math.round((step / totalSteps) * 95);
+    const fill = document.getElementById('pbar-fill');
+    const lbl = document.getElementById('pbar-lbl');
+    if (fill) fill.style.width = pct + '%';
+    if (lbl) lbl.textContent = msg;
+  }
+
+  // ── 1. NAUKRI ────────────────────────────────────────────────────
+  updatePortalCard('Naukri', 0, 'searching');
+  const naukriJobs = [];
+  for (const url of NAUKRI_URLS) {
+    try {
+      const jobs = await scrapeTab(url, 7000, extractNaukri);
+      naukriJobs.push(...jobs);
+      updatePortalCard('Naukri', naukriJobs.length, 'searching');
+      updateProgress('Naukri: ' + naukriJobs.length + ' jobs found so far...');
+    } catch(e) { console.warn('Naukri tab error:', e); }
+  }
+  allJobs.push(...naukriJobs);
+  counts.Naukri = naukriJobs.length;
+  updatePortalCard('Naukri', naukriJobs.length, naukriJobs.length > 0 ? 'done' : 'err');
+
+  // ── 2. LINKEDIN (background fetch — no tab needed) ───────────────
+  updatePortalCard('LinkedIn', 0, 'searching');
+  const linkedinJobs = [];
+  for (const kw of LINKEDIN_KEYWORDS) {
+    try {
+      const jobs = await scrapeLinkedInAPI(kw);
+      linkedinJobs.push(...jobs);
+      updatePortalCard('LinkedIn', linkedinJobs.length, 'searching');
+      updateProgress('LinkedIn: ' + linkedinJobs.length + ' jobs found so far...');
+    } catch(e) { console.warn('LinkedIn error:', e); }
+  }
+  allJobs.push(...linkedinJobs);
+  counts.LinkedIn = linkedinJobs.length;
+  updatePortalCard('LinkedIn', linkedinJobs.length, linkedinJobs.length > 0 ? 'done' : 'err');
+
+  // ── 3. INDEED ────────────────────────────────────────────────────
+  updatePortalCard('Indeed', 0, 'searching');
+  const indeedJobs = [];
+  for (const url of INDEED_URLS) {
+    try {
+      const jobs = await scrapeTab(url, 6000, extractIndeed);
+      indeedJobs.push(...jobs);
+      updatePortalCard('Indeed', indeedJobs.length, 'searching');
+      updateProgress('Indeed: ' + indeedJobs.length + ' jobs found so far...');
+    } catch(e) { console.warn('Indeed tab error:', e); }
+  }
+  allJobs.push(...indeedJobs);
+  counts.Indeed = indeedJobs.length;
+  updatePortalCard('Indeed', indeedJobs.length, indeedJobs.length > 0 ? 'done' : 'err');
+
+  // ── 4. INTERNSHALA ───────────────────────────────────────────────
+  updatePortalCard('Internshala', 0, 'searching');
+  const internshalaJobs = [];
+  for (const url of INTERNSHALA_URLS) {
+    try {
+      const jobs = await scrapeTab(url, 5000, extractInternshala);
+      internshalaJobs.push(...jobs);
+      updatePortalCard('Internshala', internshalaJobs.length, 'searching');
+      updateProgress('Internshala: ' + internshalaJobs.length + ' jobs found so far...');
+    } catch(e) { console.warn('Internshala tab error:', e); }
+  }
+  allJobs.push(...internshalaJobs);
+  counts.Internshala = internshalaJobs.length;
+  updatePortalCard('Internshala', internshalaJobs.length, internshalaJobs.length > 0 ? 'done' : 'err');
+
+  // ── DONE ─────────────────────────────────────────────────────────
+  busy = false;
+  updateStats();
+  render();
+
+  document.getElementById('pushBtn').disabled = allJobs.length === 0;
+  document.getElementById('lastupdated').textContent = 'Searched at ' + new Date().toLocaleTimeString();
+  setBtn('', '🔄', 'Search Again');
+
+  // Cache results
+  try {
+    sessionStorage.setItem('jobResults', JSON.stringify({
+      jobs: allJobs, counts, time: new Date().toLocaleTimeString()
+    }));
+  } catch(e) {}
+
+  const total = allJobs.length;
+  if (total === 0) {
+    toast('⚠️', 'No Jobs Found', 'All portals returned 0. Check internet connection or try again.', true);
+  } else {
+    // Auto push to sheets
+    await pushToSheets(true);
+    toast('✅', 'Search Complete!', `Found ${applyFilters(allJobs).length} jobs. Auto-saved to Google Sheet.`);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// TAB SCRAPER — opens a URL in background tab, extracts, closes
+// ═══════════════════════════════════════════════════════════════════
+function scrapeTab(url, waitMs, extractFn) {
+  return new Promise((resolve) => {
+    chrome.tabs.create({ url, active: false }, (tab) => {
+      const tabId = tab.id;
+
+      function onUpdated(id, info) {
+        if (id !== tabId || info.status !== 'complete') return;
+        chrome.tabs.onUpdated.removeListener(onUpdated);
+
+        // Wait for SPA/JS to render
+        setTimeout(async () => {
+          try {
+            const results = await chrome.scripting.executeScript({
+              target: { tabId },
+              func: extractFn
+            });
+            chrome.tabs.remove(tabId).catch(() => {});
+            resolve(results?.[0]?.result || []);
+          } catch (err) {
+            chrome.tabs.remove(tabId).catch(() => {});
+            resolve([]);
+          }
+        }, waitMs);
+      }
+
+      chrome.tabs.onUpdated.addListener(onUpdated);
+
+      // Safety timeout
+      setTimeout(() => {
+        chrome.tabs.onUpdated.removeListener(onUpdated);
+        chrome.tabs.remove(tabId).catch(() => {});
+        resolve([]);
+      }, waitMs + 20000);
+    });
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// EXTRACTOR: NAUKRI
+// Runs inside the Naukri tab — full DOM access with real cookies
+// ═══════════════════════════════════════════════════════════════════
+function extractNaukri() {
+  const jobs = [];
+  const seen = new Set();
+
+  // Try multiple selector strategies
+  const cardSelectors = [
+    '.srp-jobtuple-wrapper',
+    'article.jobTupleHeader',
+    '[data-job-id]',
+    '.jobTuple'
+  ];
+
+  let cards = [];
+  for (const sel of cardSelectors) {
+    const found = document.querySelectorAll(sel);
+    if (found.length > 0) { cards = Array.from(found); break; }
+  }
+
+  cards.forEach(card => {
+    // Title — try multiple selectors
+    const titleEl = card.querySelector('a.title, a[title], .title a, [class*="title"] a, h2 a, h3 a');
+    const title = (titleEl?.innerText || titleEl?.title || titleEl?.getAttribute('title') || '').trim();
+    if (!title) return;
+
+    // Dedup by title+company
+    const compEl = card.querySelector('.comp-name, a[class*="comp"], [class*="company"] a, .companyInfo a');
+    const company = (compEl?.innerText || compEl?.title || '').trim();
+    const key = (title + company).toLowerCase();
+    if (seen.has(key)) return;
+    seen.add(key);
+
+    const locEl = card.querySelector('.locWdth, [class*="location"], .loc-wrap span, [title*="Location"]');
+    const location = (locEl?.innerText || locEl?.title || '').trim();
+
+    const expEl = card.querySelector('.expwdth, [class*="experience"], [class*="exp-"] span');
+    const experience = (expEl?.innerText || '').replace(/\n/g, ' ').trim();
+
+    const dateEl = card.querySelector('.job-post-day, [class*="post-day"], [class*="date"]');
+    const datePosted = (dateEl?.innerText || '').trim();
+
+    const jobUrl = titleEl?.href || '';
+
+    if (title && company) {
+      jobs.push({ jobTitle: title, companyName: company, location: location || 'India', experience: experience || 'Not mentioned', datePosted: datePosted || 'Not mentioned', jobUrl, source: 'Naukri' });
+    }
+  });
+
+  return jobs;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// EXTRACTOR: INDEED
+// ═══════════════════════════════════════════════════════════════════
+function extractIndeed() {
+  const jobs = [];
+  const seen = new Set();
+
+  const cards = document.querySelectorAll('.job_seen_beacon, [data-jk], .resultContent, .jobsearch-ResultsList > li');
+
+  cards.forEach(card => {
+    const titleEl = card.querySelector('[data-testid="jobTitle"] a, h2.jobTitle a, a.jcs-JobTitle, .jobTitle a');
+    const title = (titleEl?.innerText || titleEl?.textContent || '').trim();
+    if (!title) return;
+
+    const compEl = card.querySelector('[data-testid="company-name"], .companyName, [class*="company"]');
+    const company = (compEl?.innerText || compEl?.textContent || '').trim();
+
+    const key = (title + company).toLowerCase();
+    if (seen.has(key)) return;
+    seen.add(key);
+
+    const locEl = card.querySelector('[data-testid="text-location"], .companyLocation, [class*="location"]');
+    const location = (locEl?.innerText || '').trim();
+
+    const dateEl = card.querySelector('[data-testid="myJobsStateDate"], .date, [class*="date"]');
+    const datePosted = (dateEl?.innerText || '').trim();
+
+    const href = titleEl?.href || card.querySelector('a')?.href || '';
+    const jobUrl = href.startsWith('http') ? href : 'https://in.indeed.com' + href;
+
+    if (title) {
+      jobs.push({ jobTitle: title, companyName: company || 'Not mentioned', location: location || 'India', experience: 'Not mentioned', datePosted: datePosted || 'Not mentioned', jobUrl, source: 'Indeed' });
+    }
+  });
+
+  return jobs;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// EXTRACTOR: INTERNSHALA
+// ═══════════════════════════════════════════════════════════════════
+function extractInternshala() {
+  const jobs = [];
+  const seen = new Set();
+
+  const cards = document.querySelectorAll('.individual_internship, .job-internship-card, [id^="internship_meta"], .internship_meta');
+
+  cards.forEach(card => {
+    const titleEl = card.querySelector('.profile a, h3.job-title a, .job_title a, h3 a, [class*="title"] a');
+    const title = (titleEl?.innerText || titleEl?.textContent || '').trim();
+    if (!title) return;
+
+    const compEl = card.querySelector('.company_name a, .company-name, [class*="company"]');
+    const company = (compEl?.innerText || '').trim();
+
+    const key = (title + company).toLowerCase();
+    if (seen.has(key)) return;
+    seen.add(key);
+
+    const locEl = card.querySelector('[class*="location"] span, .location-link, [class*="location"]');
+    const location = (locEl?.innerText || '').replace(/\n/g, ', ').trim() || 'India';
+
+    const stipEl = card.querySelector('.stipend span, .stipend, [class*="stipend"]');
+    const expEl = card.querySelector('[class*="experience"], .other_detail_item:last-child span');
+    const experience = (expEl?.innerText || '').trim();
+
+    const dateEl = card.querySelector('.status-inactive, [class*="days-left"], .date_text');
+    const datePosted = (dateEl?.innerText || '').trim();
+
+    const link = titleEl?.href || card.querySelector('a')?.href || '';
+    const jobUrl = link.startsWith('http') ? link : 'https://internshala.com' + link;
+
+    jobs.push({ jobTitle: title, companyName: company || 'Not mentioned', location, experience: experience || 'Not mentioned', datePosted: datePosted || 'Not mentioned', jobUrl, source: 'Internshala' });
+  });
+
+  return jobs;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// LINKEDIN — background fetch (guest API, no tab needed)
+// ═══════════════════════════════════════════════════════════════════
+const liSeen = new Set();
+async function scrapeLinkedInAPI(keyword) {
+  const jobs = [];
+  try {
+    const url = 'https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?' +
+      new URLSearchParams({ keywords: keyword, location: 'India', f_TPR: 'r604800', f_E: '1,2', sortBy: 'DD', start: '0' });
+
+    const resp = await fetch(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml',
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Referer': 'https://www.linkedin.com/'
+      }
+    });
+
+    if (!resp.ok) return jobs;
+
+    const html = await resp.text();
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+
+    doc.querySelectorAll('.base-search-card, .job-search-card, li').forEach(card => {
+      const titleEl = card.querySelector('.base-search-card__title, h3');
+      const title = titleEl?.textContent?.trim();
+      if (!title) return;
+
+      const compEl = card.querySelector('.base-search-card__subtitle, h4');
+      const company = compEl?.textContent?.trim() || 'Not mentioned';
+
+      const key = (title + company).toLowerCase();
+      if (liSeen.has(key)) return;
+      liSeen.add(key);
+
+      const locEl = card.querySelector('.job-search-card__location');
+      const location = locEl?.textContent?.trim() || 'India';
+
+      const timeEl = card.querySelector('time');
+      const datePosted = timeEl ? liDate(timeEl.getAttribute('datetime')) : 'Not mentioned';
+
+      const link = card.querySelector('a.base-card__full-link, a')?.href || '';
+
+      if (title) {
+        jobs.push({ jobTitle: title, companyName: company, location, experience: 'Not mentioned', datePosted, jobUrl: link, source: 'LinkedIn' });
+      }
+    });
+  } catch(e) { console.warn('LinkedIn fetch error:', e); }
+  return jobs;
+}
+
+function liDate(iso) {
+  if (!iso) return 'Not mentioned';
+  try {
+    const d = new Date(iso), now = new Date();
+    const days = Math.floor((now - d) / 86400000);
+    if (days === 0) return 'Today';
+    if (days === 1) return '1 day ago';
+    if (days <= 7) return days + ' days ago';
+    if (days <= 14) return '1 week ago';
+    return '2+ weeks ago';
+  } catch { return 'Not mentioned'; }
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// FILTERS
+// ═══════════════════════════════════════════════════════════════════
+const KEYWORDS = ['product analyst','data analyst','business analyst','product manager','growth analyst','analytics engineer','business intelligence','bi analyst','decision scientist','product operations','product data','consumer insights','customer analytics','associate product manager','assistant product manager','wfm analyst','workforce management','resource planning analyst','quantitative analyst'];
+const EXCL_LOC = ['usa','united states','uk','united kingdom','canada','australia','singapore','dubai','uae','germany','france','london','new york','toronto','sydney','berlin','amsterdam','qatar','saudi'];
+
+function applyFilters(jobs) {
+  const seen = new Set();
+  return jobs.filter(j => {
+    const tl = (j.jobTitle || '').toLowerCase();
+    if (!KEYWORDS.some(k => tl.includes(k))) return false;
+    const ll = (j.location || '').toLowerCase();
+    if (EXCL_LOC.some(e => ll.includes(e))) return false;
+    const el = (j.experience || '').toLowerCase();
+    if (el && el !== 'not mentioned') {
+      const m = el.match(/(\d+)\s*[-–]\s*(\d+)/);
+      if (m && parseInt(m[1]) > 3) return false;
+    }
+    const key = tl + '|' + (j.companyName || '').toLowerCase();
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// RENDER TABLE
+// ═══════════════════════════════════════════════════════════════════
+function render() {
+  let jobs = applyFilters(allJobs);
+  const ftext = document.getElementById('ftext').value.toLowerCase().trim();
+  const fsrc = document.getElementById('fsrc').value;
+  const fdate = document.getElementById('fdate').value;
+
+  if (ftext) jobs = jobs.filter(j => (j.jobTitle + ' ' + j.companyName).toLowerCase().includes(ftext));
+  if (fsrc) jobs = jobs.filter(j => j.source === fsrc);
+  if (fdate) {
+    jobs = jobs.filter(j => {
+      const d = (j.datePosted || '').toLowerCase();
+      if (fdate === 'today') return /today|hour/.test(d);
+      if (fdate === '3d') { if (/week|month/.test(d)) return false; const m = d.match(/(\d+)\s*day/); return !m || parseInt(m[1]) <= 3; }
+      if (fdate === '7d') { if (/month/.test(d)) return false; const m = d.match(/(\d+)\s*week/); return !m || parseInt(m[1]) <= 1; }
+      if (fdate === '2w') return !/month/.test(d);
+      return true;
+    });
+  }
+
+  displayed = jobs;
+  document.getElementById('rcount').textContent = jobs.length + ' jobs';
+  document.getElementById('tbl-badge').textContent = jobs.length;
+
+  if (jobs.length === 0 && allJobs.length > 0) {
+    document.getElementById('tbody').innerHTML = '<tr><td colspan="6"><div class="empty"><span class="empty-ico">🔍</span><div class="empty-t">No matches</div><div class="empty-s">Try adjusting the filters above.</div></div></td></tr>';
+    return;
+  }
+
+  document.getElementById('tbody').innerHTML = jobs.map((j, i) => {
+    const fresh = /today|hour|^1 day/i.test(j.datePosted || '');
+    const src = 's-' + (j.source || '').toLowerCase();
+    return `<tr style="animation:rowIn .3s ${Math.min(i*.015,.5)}s both">
+      <td style="min-width:280px"><a href="${esc(j.jobUrl||'#')}" target="_blank" class="jt" title="${esc(j.jobTitle)}">${esc(j.jobTitle||'Unknown')}</a><div class="jc">🏢 ${esc(j.companyName||'—')}</div></td>
+      <td><span class="loc">📍 ${esc(j.location||'India')}</span></td>
+      <td><span class="etag">${esc(j.experience||'Not mentioned')}</span></td>
+      <td><span class="dtag${fresh?' fresh':''}">${fresh?'🔥 ':''}${esc(j.datePosted||'—')}</span></td>
+      <td><span class="sbdg ${src}">${esc(j.source||'')}</span></td>
+      <td><a href="${esc(j.jobUrl||'#')}" target="_blank" class="al">Apply →</a></td>
+    </tr>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// PUSH TO SHEETS
+// ═══════════════════════════════════════════════════════════════════
+async function pushToSheets(silent = false) {
+  const jobs = (displayed.length > 0 ? displayed : applyFilters(allJobs)).map(j => ({
+    title: j.jobTitle, company: j.companyName, location: j.location,
+    experience: j.experience, datePosted: j.datePosted,
+    link: j.jobUrl, source: j.source,
+    dateAdded: new Date().toLocaleDateString('en-GB').split('/').join('-')
+  }));
+
+  if (!jobs.length) return;
+
+  const btn = document.getElementById('pushBtn');
+  if (!silent) { btn.disabled = true; btn.textContent = '⏳ Pushing...'; }
+
+  try {
+    const r = await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ jobs }),
+      signal: AbortSignal.timeout(30000)
+    });
+    const d = await r.json();
+    const added = d.added || 0;
+    setStat('sv-sheet', added);
+    if (!silent) { btn.textContent = `✅ ${added} added`; toast('📊', 'Sheets Updated!', `${added} new jobs written to your Google Sheet.`); }
+  } catch {
+    // fallback no-cors
+    fetch(APPS_SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type':'application/json'}, body: JSON.stringify({jobs}) }).catch(()=>{});
+    if (!silent) { btn.textContent = '✅ Sent'; }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// UI HELPERS
+// ═══════════════════════════════════════════════════════════════════
+function updatePortalCard(portal, count, state) {
+  const card = document.getElementById('pc-' + portal);
+  const ctel = document.getElementById('pct-' + portal);
+  const stel = document.getElementById('ps-' + portal);
+  if (!card) return;
+  card.className = 'pc ' + state;
+  if (state === 'searching') {
+    ctel.textContent = count || '...'; ctel.className = 'pct';
+    stel.innerHTML = '<span class="sp"></span> Scraping...'; stel.className = 'ps on';
+  } else if (state === 'done') {
+    ctel.textContent = count; ctel.className = 'pct ok';
+    stel.textContent = '✓ Done'; stel.className = 'ps ok';
+  } else if (state === 'err') {
+    ctel.textContent = '0'; ctel.className = 'pct er';
+    stel.textContent = 'No results'; stel.className = 'ps er';
+  }
+}
+
+function resetPortal(portal) {
+  updatePortalCard(portal, 0, 'searching');
+}
+
+function updateStats() {
+  const filtered = applyFilters(allJobs);
+  const fresh = filtered.filter(j => /today|hour|^1 day/i.test(j.datePosted || '')).length;
+  setStat('sv-total', allJobs.length);
+  setStat('sv-filtered', filtered.length);
+  setStat('sv-fresh', fresh);
+}
+
+function setStat(id, val) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = val;
+  el.classList.add('pop');
+  setTimeout(() => el.classList.remove('pop'), 400);
+}
+
+function setBtn(cls, ico, txt) {
+  const btn = document.getElementById('searchBtn');
+  btn.className = cls ? 'busy' : '';
+  document.getElementById('bico').textContent = ico;
+  document.getElementById('btxt').textContent = txt;
+}
+
+function showLoading(msg) {
+  document.getElementById('tbody').innerHTML = `<tr><td colspan="6"><div class="empty">
+    <span class="empty-ico spin">⚙️</span>
+    <div class="empty-t">Scraping in progress...</div>
+    <div class="empty-s">${msg}<br>Each portal opens as a real browser tab in the background.</div>
+    <div class="pbar-wrap">
+      <div class="pbar"><div class="pbar-fill" id="pbar-fill" style="width:3%"></div></div>
+      <div class="pbar-lbl" id="pbar-lbl">Starting...</div>
+    </div>
+  </div></td></tr>`;
+}
+
+let toastT;
+function toast(ico, title, msg, err = false) {
+  document.getElementById('tico').textContent = ico;
+  document.getElementById('tt').textContent = title;
+  document.getElementById('tm').textContent = msg;
+  const el = document.getElementById('toast');
+  el.style.borderColor = err ? 'rgba(239,68,68,.3)' : 'rgba(99,102,241,.25)';
+  el.classList.add('show');
+  clearTimeout(toastT);
+  toastT = setTimeout(() => el.classList.remove('show'), 5000);
+}
+
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// Inject row animation
+const st = document.createElement('style');
+st.textContent = '@keyframes rowIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:none}}';
+document.head.appendChild(st);
+</script>
+</body>
+</html>
