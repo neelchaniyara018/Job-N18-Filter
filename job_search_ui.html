@@ -174,36 +174,79 @@ header {
 #searchBtn {
   position: relative; z-index: 1;
   display: inline-flex; align-items: center; justify-content: center;
-  gap: 10px; padding: 16px 48px;
-  border: none; border-radius: 30px; cursor: pointer;
+  gap: 12px; padding: 16px 44px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 9999px; cursor: pointer;
   font-family: inherit; font-size: 16px; font-weight: 700; color: #ffffff;
-  background: var(--accent);
-  box-shadow: 0 8px 30px rgba(124, 58, 237, 0.4);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: linear-gradient(135deg, #7c3aed 0%, #9333ea 50%, #6366f1 100%);
+  background-size: 200% 200%;
+  box-shadow: 0 8px 30px rgba(124, 58, 237, 0.45), 0 0 20px rgba(147, 51, 234, 0.25);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+  user-select: none;
+}
+
+#searchBtn::after {
+  content: ''; position: absolute; top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: 0.5s;
 }
 
 #searchBtn:hover {
-  transform: translateY(-2px);
-  background: #6d28d9;
-  box-shadow: 0 12px 40px rgba(124, 58, 237, 0.6);
+  transform: translateY(-2px) scale(1.02);
+  background-position: 100% 0;
+  box-shadow: 0 12px 40px rgba(124, 58, 237, 0.65), 0 0 30px rgba(99, 102, 241, 0.4);
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
-#searchBtn:active { transform: translateY(0); }
+#searchBtn:hover::after { left: 100%; }
+#searchBtn:active { transform: translateY(0) scale(0.98); }
 
 #searchBtn.loading {
-  background: #1e1b4b;
-  box-shadow: none; cursor: not-allowed; transform: none;
+  background: linear-gradient(135deg, #4f46e5, #7c3aed, #9333ea);
+  background-size: 200% 200%;
+  animation: btnGradientShift 3s ease infinite alternate;
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.1);
+  cursor: wait;
+  pointer-events: none;
+  transform: none;
+  opacity: 0.95;
+}
+
+@keyframes btnGradientShift {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+.btn-icon-box {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 20px; height: 20px; flex-shrink: 0;
 }
 
 .search-icon-svg {
-  width: 18px; height: 18px; fill: none; stroke: currentColor;
-  transition: transform 0.3s;
+  width: 20px; height: 20px; fill: none; stroke: currentColor;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: block;
 }
 
-#searchBtn:hover .search-icon-svg { transform: scale(1.1) rotate(-5deg); }
-#searchBtn.loading .search-icon-svg { animation: spin 1s linear infinite; }
+#searchBtn:hover .search-icon-svg { transform: scale(1.15) rotate(-8deg); }
 
-@keyframes spin { to { transform: rotate(360deg); } }
+.search-spinner-svg {
+  width: 20px; height: 20px; display: none;
+  transform-origin: center center;
+}
+
+#searchBtn.loading .search-icon-svg { display: none !important; }
+#searchBtn.loading .search-spinner-svg {
+  display: block !important;
+  animation: btnSpinnerRotate 0.8s linear infinite;
+}
+
+@keyframes btnSpinnerRotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 
 .search-note {
   margin-top: 14px; font-size: 12px; color: var(--text3);
@@ -871,7 +914,16 @@ header {
 
     <div class="search-btn-wrap">
       <button id="searchBtn" onclick="startSearch()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="search-icon-svg" id="btnIcon"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <span class="btn-icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="search-icon-svg" id="searchNormalIcon">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <svg viewBox="0 0 24 24" fill="none" class="search-spinner-svg" id="searchLoadingIcon">
+            <circle cx="12" cy="12" r="9" stroke="rgba(255, 255, 255, 0.25)" stroke-width="3"></circle>
+            <path d="M12 3a9 9 0 0 1 9 9" stroke="#ffffff" stroke-width="3" stroke-linecap="round"></path>
+          </svg>
+        </span>
         <span id="btnText">Search</span>
       </button>
     </div>
@@ -1210,7 +1262,7 @@ async function startSearch() {
   // Update button
   const btn = document.getElementById('searchBtn');
   btn.classList.add('loading');
-  document.getElementById('btnIcon').innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="search-icon-svg" style="animation: spin 1s linear infinite;"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>`;
+  btn.disabled = true;
   document.getElementById('btnText').textContent = 'Searching all portals...';
 
   // Reset portal cards to searching state
@@ -1381,7 +1433,7 @@ async function startSearch() {
   // Reset button
   isSearching = false;
   btn.classList.remove('loading');
-  document.getElementById('btnIcon').innerHTML = `<circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>`;
+  btn.disabled = false;
   document.getElementById('btnText').textContent = 'Search Again';
 }
 
